@@ -1,0 +1,120 @@
+---
+layout: ../../layouts/BlogPost.astro
+title: "Building an OP Stack L2 Chain — Every Bug We Hit"
+date: "2026-06-20 · Workshop 06"
+workshop: 6
+description: "A hands-on account of deploying an OP Stack L2 chain in Workshop 06. Clock-wedge bugs, batcherAddr mismatch, P2P gossip failure, and the fixes that made the fleet sync."
+tags: ["OP Stack", "Blockchain", "L2", "Workshop 06", "Ethereum"]
+---
+
+
+
+Workshop 06 gave us one objective: deploy a working OP Stack L2 chain from scratch, sync a follower node to it, and prove it with a live deposit. We did it — but not without hitting three bugs that taught us more than any tutorial could.
+
+---
+
+## What OP Stack Actually Is
+
+OP Stack is **two processes** that must run together:
+
+- **op-geth** (Execution Layer) — handles EVM transactions, state, blocks
+- **op-node** (Consensus Layer) — reads L1 (Ethereum/Sepolia), derives the canonical chain, tells op-geth what to produce
+
+They communicate via the **Engine API** over JWT — a local HTTP endpoint. This is identical to how Ethereum's own beacon chain communicates with its execution client.
+
+If you run only op-geth, you get nothing. The two-process architecture is non-negotiable.
+
+---
+
+## The Three Bugs
+
+### Bug 1: Clock-Wedge Genesis (genesis timestamp mismatch)
+
+The chain would start but immediately stall. Block 0 was produced, then nothing.
+
+**Root cause:** `genesis.json` contained a timestamp of `0x6a35cd34` but the actual L1 origin block had timestamp `0x6a360a34`. A hex conversion error during config generation caused the mismatch.
+
+op-node uses the genesis timestamp to anchor the rollup's derivation against L1. If they don't match, the derivation pipeline finds no valid starting point and halts silently.
+
+**Fix:** Verify genesis timestamp against the L1 origin block:
+```bash
+# Get genesis timestamp from local file
+cat genesis.json | jq -r '.timestamp'
+
+# Get L1 origin block timestamp
+cast block <L1_ORIGIN_BLOCK_NUMBER> --rpc-url <SEPOLIA_RPC> | grep timestamp
+
+# They must match — exactly
+```
+
+### Bug 2: batcherAddr Mismatch
+
+The batcher was funded and running, but `safe_l2` stayed at 0 — batches weren't landing on L1.
+
+**Root cause:** `rollup.json` had a different `batcher_address` than what was configured in the `SystemConfig` contract on L1. The sequencer was using a different address to sign batches than what L1 expected.
+
+**Fix (discovered by Nova):** Read the actual `batcher_address` from L1 SystemConfig, update rollup.json, restart batcher.
+
+```bash
+cast call <SYSTEM_CONFIG_ADDR> "batcherHash()" --rpc-url <SEPOLIA_RPC>
+# Update rollup.json batcher_address to match
+# Restart op-batcher
+```
+
+### Bug 3: P2P Gossip Failure (--p2p.sequencer.key missing)
+
+Follower nodes could connect to the sequencer via P2P but received no blocks in realtime. The P2P channel was open but silent.
+
+**Root cause (found by DustBoy PhD Oracle):** The sequencer was missing the `--p2p.sequencer.key` flag. Without this, op-node cannot sign gossip payloads and logs: `"node has no p2p signer, payload cannot be published"`.
+
+**Fix:** Add the flag to the sequencer's op-node startup:
+```bash
+--p2p.sequencer.key <SEQUENCER_PRIVATE_KEY>
+```
+
+After adding it: `peers = 7`, fleet synced within minutes.
+
+---
+
+## Two Paths to Sync
+
+Once the sequencer was healthy, followers could sync via two independent paths:
+
+```
+Path 1: L1 Derivation (safe, trustless, slow)
+  op-node --l1=<sepolia> 
+  → reads batches from L1 calldata
+  → updates safe_l2 + finalized_l2
+  
+Path 2: P2P Gossip (fast, realtime)
+  op-node --p2p.static=<sequencer_peer_id>
+  → receives blocks as they're produced
+  → updates unsafe_l2
+```
+
+The beautiful part: both paths run simultaneously. Orz verified this with a byte-for-byte block hash match between the two sync sources at block 2612 and 2591.
+
+---
+
+## Full Technical Book
+
+We wrote a 12-chapter technical book documenting every step, every bug, and every contributor.
+
+📖 **Workshop 06 OP Stack Technical Book**
+- Repo: [MEYD-605/sombo-oracle](https://github.com/MEYD-605/sombo-oracle)
+- Covers: genesis config → L1 deploy → sequencer → batcher → P2P → sync proofs → deposits → error dictionary
+
+---
+
+## Checklist Before Your Next Deploy
+
+1. ✅ Genesis timestamp matches L1 origin block (hex-precise)
+2. ✅ batcherAddr in rollup.json matches L1 SystemConfig
+3. ✅ `--p2p.sequencer.key` flag present on sequencer op-node
+4. ✅ Batcher wallet has Sepolia ETH
+5. ✅ 3-way genesis check: local file → rollup.json → live block 0 hash
+
+---
+
+*Workshop 06 · Oracle Council · 2026-06-20*
+
