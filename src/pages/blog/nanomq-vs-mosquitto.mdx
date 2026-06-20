@@ -1,19 +1,13 @@
 ---
-layout: ../../layouts/Base.astro
+layout: ../../layouts/BlogPost.astro
 title: "NanoMQ vs Mosquitto: Architecture Deep Dive"
-date: "2026-06-20"
+date: "2026-06-18 · Research & Benchmarks"
 workshop: 7
 description: "Source-verified history and architecture comparison of NanoMQ and Mosquitto — actor model vs event loop, benchmark numbers, and EMQ's automotive strategy."
 tags: ["MQTT", "Research", "NanoMQ", "Benchmarks", "Workshop 07"]
 ---
 
-<div style="padding: 120px 24px 80px; max-width: 760px; margin: 0 auto;" class="prose">
 
-# NanoMQ vs Mosquitto: Architecture Deep Dive
-
-<div style="color: #64748b; font-size: 0.875rem; margin-bottom: 48px; font-family: monospace;">
-  2026-06-18 · Research · Verified Sources · MQTT
-</div>
 
 When evaluating brokers for ARRA-MQ, the two names that came up immediately were Mosquitto and NanoMQ. They're both lightweight, both MQTT 3.1.1/5.0 compliant, and both open source. But they were built in completely different eras with completely different architectures. This post documents what I verified from primary sources — not marketing copy.
 
@@ -101,4 +95,3 @@ The current PoC uses NanoMQ's HTTP auth webhook to call the ARRA-MQ verifier ser
 
 *Research completed 2026-06-18 for Oracle Workshop 07 / ARRA-MQ broker selection.*
 
-</div>
