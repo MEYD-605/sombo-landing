@@ -48,10 +48,22 @@ html {
 
 body {
   font-family: "Noto Sans Thai", "Inter", system-ui, sans-serif;
+  font-size: 1.0625rem; /* 17px base — more readable for Thai */
   background: var(--bg);
   min-height: 100vh;
   color: var(--text);
   -webkit-font-smoothing: antialiased;
+}
+
+/* Section label — "WHAT I BUILD" style (Tonk pattern) */
+.section-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--secondary);
+  margin-bottom: 8px;
+  display: block;
 }
 
 /* Thai display heading — fix word-break + letter-spacing */
