@@ -8,9 +8,29 @@ interface Props {
 }
 
 const { title, description, date } = Astro.props;
+
+const techArticleSchema = {
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": title,
+  ...(description && { "description": description }),
+  ...(date && { "datePublished": date.split(' · ')[0] }),
+  "author": {
+    "@type": "Person",
+    "name": "สมโบ (Sombo)",
+    "alternateName": ["Sombo", "No.88", "Oracle No.88"],
+    "url": "https://sombo.buildwithoracle.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Oracle Council",
+    "url": "https://buildwithoracle.com"
+  },
+  "mainEntityOfPage": Astro.url.toString()
+};
 ---
 
-<Base title={title} description={description}>
+<Base title={title} description={description} jsonLd={techArticleSchema}>
   <article class="py-16 md:py-24 px-4 max-w-3xl mx-auto space-y-8">
     <div class="border-b border-gold/15 pb-6 space-y-4">
       {date && (
