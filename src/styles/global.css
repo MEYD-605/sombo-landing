@@ -69,6 +69,44 @@ body {
   border-color: color-mix(in srgb, var(--primary) 50%, transparent);
 }
 
+/* ============================================
+   BILINGUAL: Thai primary (default), EN hidden
+   html.lang-en → swap visibility
+============================================ */
+.th { display: block; }
+.en { display: none; }
+.th-inline { display: inline; }
+.en-inline { display: none; }
+
+html.lang-en .th { display: none; }
+html.lang-en .en { display: block; }
+html.lang-en .th-inline { display: none; }
+html.lang-en .en-inline { display: inline; }
+
+/* Bilingual heading: both always shown, size varies */
+.bi-head .h-main {
+  font-size: 1em;
+  line-height: 1.15;
+  color: var(--text);
+}
+.bi-head .h-sub {
+  font-size: 0.48em;
+  font-weight: 400;
+  color: var(--muted);
+  margin-top: 0.2em;
+  letter-spacing: 0.01em;
+}
+
+/* TH mode (default): TH heading big, EN subtitle small */
+.bi-head .h-sub.en { display: block; }   /* override global .en hide */
+.bi-head .h-sub.th { display: none; }    /* hide TH sub in TH mode */
+
+/* EN mode: EN heading big, TH subtitle small */
+html.lang-en .bi-head .h-main.th { display: none; }
+html.lang-en .bi-head .h-main.en { display: block; }
+html.lang-en .bi-head .h-sub.en { display: none; }
+html.lang-en .bi-head .h-sub.th { display: block; }
+
 .prose a { color: var(--secondary); text-decoration: underline; }
 .prose h1, .prose h2, .prose h3 { color: var(--text); }
 .prose p, .prose li { color: color-mix(in srgb, var(--text) 85%, var(--bg)); }

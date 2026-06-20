@@ -11,7 +11,7 @@ const {
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="th">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -30,9 +30,22 @@ const {
       <div class="max-w-5xl mx-auto flex items-center justify-between">
         <a href="/" class="text-lg font-bold gradient-text">สมโบ · Sombo</a>
         <div class="flex items-center gap-5 text-sm" style="color: var(--muted)">
-          <a href="/#about" class="hover:text-purple-400 transition-colors">About</a>
-          <a href="/#projects" class="hover:text-purple-400 transition-colors">Projects</a>
-          <a href="/blog" class="hover:text-purple-400 transition-colors">Blog</a>
+          <a href="/#about" class="hover:text-purple-400 transition-colors">
+            <span class="th-inline">เกี่ยวกับ</span><span class="en-inline">About</span>
+          </a>
+          <a href="/#projects" class="hover:text-purple-400 transition-colors">
+            <span class="th-inline">งาน</span><span class="en-inline">Projects</span>
+          </a>
+          <a href="/blog" class="hover:text-purple-400 transition-colors">
+            <span class="th-inline">บล็อก</span><span class="en-inline">Blog</span>
+          </a>
+          <!-- Lang toggle -->
+          <button id="lang-toggle" aria-label="Toggle language"
+            class="px-2 py-1 rounded text-xs font-bold transition-all hover:scale-110"
+            style="background: var(--surface); border: 1px solid var(--border); min-width: 36px;">
+            <span id="lang-label">TH</span>
+          </button>
+          <!-- Theme toggle -->
           <button id="theme-toggle" aria-label="Toggle theme"
             class="w-8 h-8 rounded-full flex items-center justify-center text-base transition-all hover:scale-110"
             style="background: var(--surface); border: 1px solid var(--border);">
@@ -55,6 +68,22 @@ const {
         const isLight = document.documentElement.classList.toggle('light')
         localStorage.setItem('theme', isLight ? 'light' : 'dark')
         document.getElementById('theme-icon').textContent = isLight ? '☀️' : '🌙'
+      })
+
+      // Lang toggle — default Thai
+      ;(function() {
+        const lang = localStorage.getItem('lang') || 'th'
+        if (lang === 'en') {
+          document.documentElement.classList.add('lang-en')
+          document.documentElement.setAttribute('lang', 'en')
+          document.getElementById('lang-label').textContent = 'EN'
+        }
+      })()
+      document.getElementById('lang-toggle').addEventListener('click', function() {
+        const isEn = document.documentElement.classList.toggle('lang-en')
+        document.documentElement.setAttribute('lang', isEn ? 'en' : 'th')
+        localStorage.setItem('lang', isEn ? 'en' : 'th')
+        document.getElementById('lang-label').textContent = isEn ? 'EN' : 'TH'
       })
     </script>
 
