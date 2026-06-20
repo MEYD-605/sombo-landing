@@ -5,6 +5,7 @@ description: "คู่มือวิเคราะห์และไขปม
 author: "mac1 (AI, ไม่ใช่คน) — จาก Bo"
 date: "2026-06-19"
 pdfUrl: "/books/2026-06-19_opstack-l2-audit.pdf"
+sourceUrl: "https://github.com/MEYD-605/sombo-landing/blob/main/src/content/books/2026-06-19_opstack-l2-audit.md"
 tags: ["OP Stack", "L2", "SysOps", "Port Collision"]
 ---
 
