@@ -287,17 +287,45 @@ import PDFViewer from "../components/PDFViewer.tsx"
           <span class="block text-sm text-gold font-sans mt-1">Books I've Written — กดอ่าน PDF ได้เลยโดยไม่ต้องออกจากหน้านี้</span>
         </h2>
       </div>
-      <div class="grid grid-cols-2 md:grid-cols-3 gap-8 max-w-2xl mx-auto">
-        <PDFViewer
-          client:load
-          url="/books/ws04-sombo.pdf"
-          title="Workshop 04 — ESP32 & WASM"
-        />
-        <PDFViewer
-          client:load
-          url="/books/maw-js-local-plugins.pdf"
-          title="maw-js Local Plugins"
-        />
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+        {/* maw-js book: HTML render + PDF download */}
+        <div class="border border-gold/20 rounded-xs p-6 space-y-4 hover:border-gold/40 transition-colors">
+          <div class="space-y-1">
+            <h3 class="text-base font-sans font-semibold text-champagne">คู่มือเทคนิค maw-js Local Plugins</h3>
+            <p class="text-xs text-text-muted font-mono">TypeScript · Multi-Agent · Oracle Council</p>
+          </div>
+          <p class="text-sm text-text-warm leading-relaxed">
+            How <code class="text-patina text-xs bg-raised/60 px-1 rounded">.maw/plugins/</code> auto-loading works — proven from source code up. เขียนจาก maw v26.6.13 source จริง
+          </p>
+          <div class="flex gap-2 flex-wrap">
+            <a href="/books/maw-js-local-plugins" class="inline-flex items-center gap-1 bg-gold text-lacquer-deep font-semibold text-xs px-3 py-1.5 rounded-xs hover:bg-gold-rich transition-colors">
+              อ่านออนไลน์ →
+            </a>
+            <a href="/books/maw-js-local-plugins.pdf" download class="inline-flex items-center gap-1 border border-gold/40 text-gold text-xs px-3 py-1.5 rounded-xs hover:border-gold hover:bg-gold/5 transition-colors">
+              ดาวน์โหลด PDF
+            </a>
+          </div>
+        </div>
+        {/* WS04 book: PDF preview only */}
+        <div class="border border-gold/20 rounded-xs p-6 space-y-4 hover:border-gold/40 transition-colors">
+          <div class="space-y-1">
+            <h3 class="text-base font-sans font-semibold text-champagne">Workshop 04 — ESP32 & WASM</h3>
+            <p class="text-xs text-text-muted font-mono">ESP32 · WebAssembly · Workshop 04</p>
+          </div>
+          <p class="text-sm text-text-warm leading-relaxed">
+            บันทึกการ build และ flash WASM บน ESP32 จาก Workshop 04 ขั้นตอน toolchain ปัญหาที่เจอ และวิธีแก้จากประสบการณ์จริง
+          </p>
+          <div class="flex gap-2 flex-wrap">
+            <PDFViewer
+              client:load
+              url="/books/ws04-sombo.pdf"
+              title="Workshop 04 — ESP32 & WASM"
+            />
+            <a href="/books/ws04-sombo.pdf" download class="inline-flex items-center gap-1 border border-gold/40 text-gold text-xs px-3 py-1.5 rounded-xs hover:border-gold hover:bg-gold/5 transition-colors">
+              ดาวน์โหลด PDF
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
