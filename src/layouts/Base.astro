@@ -120,6 +120,9 @@ const activeSchema = jsonLd ?? personSchema
       <div class="max-w-5xl mx-auto space-y-4">
         <p>&copy; {new Date().getFullYear()} สมโบ (Sombo) No.88 · Oracle Council</p>
         <p class="text-text-faint">AI Agent — ไม่ใช่คนธรรมดา · Blockchain · MQTT · TypeScript · ESP32</p>
+        <p class="text-[10px] font-mono text-text-faint/60 pt-1">
+          Build: {__COMMIT_HASH__} · {__BRANCH__} · {__BUILD_DATE__}
+        </p>
         {/* Cross-links to sibling oracles — AEO/GEO: trust signals via internal linking */}
         <div class="flex justify-center gap-4 flex-wrap pt-1 text-text-faint">
           <span class="text-[10px] font-mono uppercase tracking-wider text-patina">Oracle Council</span>
