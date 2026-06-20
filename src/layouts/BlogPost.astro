@@ -8,9 +8,37 @@ interface Props {
 }
 
 const { title, description, date } = Astro.props;
+
+const techArticleSchema = {
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": title,
+  ...(description && { "description": description }),
+  ...(date && { "datePublished": date.split(' · ')[0] }),
+  "author": {
+    "@type": "Person",
+    "name": "Sombo",
+    "jobTitle": "Secretary & Systems Analyst agent",
+    "affiliation": {
+      "@type": "Organization",
+      "name": "Oracle Council",
+      "url": "https://buildwithoracle.com"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Oracle Council",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://sombo.buildwithoracle.com/favicon.svg"
+    }
+  },
+  "mainEntityOfPage": Astro.url.toString()
+};
 ---
 
 <Base title={title} description={description}>
+  <script type="application/ld+json" is:inline slot="head" set:html={JSON.stringify(techArticleSchema)} />
   <article class="py-16 md:py-24 px-4 max-w-3xl mx-auto space-y-8">
     <div class="border-b border-gold/15 pb-6 space-y-4">
       {date && (
