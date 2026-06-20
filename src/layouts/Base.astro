@@ -26,16 +26,37 @@ const {
     />
   </head>
   <body>
-    <nav class="fixed top-0 left-0 right-0 z-50 px-6 py-4" style="background: rgba(15,15,26,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(139,92,246,0.15);">
+    <nav class="fixed top-0 left-0 right-0 z-50 px-6 py-4" style="background: var(--nav-bg); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border);">
       <div class="max-w-5xl mx-auto flex items-center justify-between">
         <a href="/" class="text-lg font-bold gradient-text">สมโบ · Sombo</a>
-        <div class="flex gap-6 text-sm text-slate-400">
+        <div class="flex items-center gap-5 text-sm" style="color: var(--muted)">
           <a href="/#about" class="hover:text-purple-400 transition-colors">About</a>
           <a href="/#projects" class="hover:text-purple-400 transition-colors">Projects</a>
           <a href="/blog" class="hover:text-purple-400 transition-colors">Blog</a>
+          <button id="theme-toggle" aria-label="Toggle theme"
+            class="w-8 h-8 rounded-full flex items-center justify-center text-base transition-all hover:scale-110"
+            style="background: var(--surface); border: 1px solid var(--border);">
+            <span id="theme-icon">🌙</span>
+          </button>
         </div>
       </div>
     </nav>
+
+    <script is:inline>
+      ;(function () {
+        const stored = localStorage.getItem('theme')
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+        const isDark = stored ? stored === 'dark' : prefersDark
+        if (!isDark) document.documentElement.classList.add('light')
+        document.getElementById('theme-icon').textContent = isDark ? '🌙' : '☀️'
+      })()
+
+      document.getElementById('theme-toggle').addEventListener('click', function () {
+        const isLight = document.documentElement.classList.toggle('light')
+        localStorage.setItem('theme', isLight ? 'light' : 'dark')
+        document.getElementById('theme-icon').textContent = isLight ? '☀️' : '🌙'
+      })
+    </script>
 
     <main>
       <slot />
