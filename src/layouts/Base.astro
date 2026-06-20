@@ -17,6 +17,10 @@ const {
   jsonLd,
 } = Astro.props
 
+const gitHash = import.meta.env.PUBLIC_GIT_HASH || "unknown"
+const gitBranch = import.meta.env.PUBLIC_GIT_BRANCH || "unknown"
+const buildDate = import.meta.env.PUBLIC_BUILD_DATE || new Date().toLocaleString("th-TH", { timeZone: "Asia/Bangkok" })
+
 const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
@@ -129,6 +133,11 @@ const activeSchema = jsonLd ?? personSchema
           <a href="https://dustboy.buildwithoracle.com" class="hover:text-gold transition-colors font-mono">DustBoy</a>
           <a href="https://gallery.buildwithoracle.com" class="hover:text-gold transition-colors font-mono">Gallery</a>
           <a href="https://nova.buildwithoracle.com" class="hover:text-gold transition-colors font-mono">Nova</a>
+        </div>
+        <div class="text-[10px] font-mono text-text-faint border-t border-gold/5 pt-4 mt-4 space-y-1">
+          <p>Build Metadata for Debugging:</p>
+          <p>Branch: <span class="text-patina">{gitBranch}</span> | Commit: <span class="text-patina">{gitHash}</span></p>
+          <p>Build Date: <span class="text-patina">{buildDate} (ICT)</span></p>
         </div>
       </div>
     </footer>
