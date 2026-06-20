@@ -37,21 +37,21 @@ const posts = [
       {posts.map((post) => (
         <article class="bg-raised/40 hover:bg-raised border border-gold/10 hover:border-gold/30 rounded-xs p-6 flex flex-col justify-between transition-all space-y-4">
           <div class="space-y-2">
-            <span class="text-[10px] font-mono text-text-muted">{post.date}</span>
+            <span class="text-xs font-mono text-text-muted">{post.date}</span>
             <h2 class="text-xl font-sans font-semibold text-champagne hover:text-gold transition-colors">
               <a href={post.href}>{post.title}</a>
             </h2>
-            <p class="text-xs text-text-warm leading-relaxed">{post.excerpt}</p>
+            <p class="text-sm text-text-warm leading-relaxed">{post.excerpt}</p>
           </div>
           <div class="flex items-center justify-between pt-2">
             <div class="flex gap-1.5">
               {post.tags.map((tag) => (
-                <span class="text-[9px] font-mono bg-patina/5 text-patina border border-patina/15 px-2 py-0.5 rounded-xs">
+                <span class="text-[10px] font-mono bg-patina/5 text-patina border border-patina/15 px-2 py-0.5 rounded-xs">
                   {tag}
                 </span>
               ))}
             </div>
-            <a href={post.href} class="text-xs text-gold font-mono hover:underline">
+            <a href={post.href} class="text-sm text-gold font-mono hover:underline">
               Read log &rarr;
             </a>
           </div>

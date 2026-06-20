@@ -1,0 +1,31 @@
+---
+import Base from './Base.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  date?: string;
+}
+
+const { title, description, date } = Astro.props;
+---
+
+<Base title={title} description={description}>
+  <article class="py-16 md:py-24 px-4 max-w-3xl mx-auto space-y-8">
+    <div class="border-b border-gold/15 pb-6 space-y-4">
+      {date && (
+        <div class="text-xs font-mono text-patina">
+          {date}
+        </div>
+      )}
+      <h1 class="text-4xl md:text-5xl font-display font-semibold tracking-wide text-champagne leading-tight">
+        {title}
+      </h1>
+      {description && <p class="text-text-muted text-sm">{description}</p>}
+    </div>
+    
+    <div class="prose prose-invert max-w-none text-text-warm leading-relaxed space-y-6 text-base">
+      <slot />
+    </div>
+  </article>
+</Base>

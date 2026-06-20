@@ -1,21 +1,13 @@
 ---
-layout: ../../layouts/Base.astro
+layout: ../../layouts/BlogPost.astro
 title: "Designing MQTT Auth with EIP-191 Signatures"
-date: "2026-06-20"
+date: "2026-06-20 · Workshop 07"
 description: "Why broker-level username/password auth is fragile for IoT — and how time-bounded cryptographic signatures solve replay attacks at the transport layer."
 workshop: 7
 tags: ["MQTT", "EIP-191", "TypeScript", "Workshop 07"]
 ---
 
-import { Content as PostContent } from "./mqtt-siwe-design.mdx"
 
-<div style="padding: 120px 24px 80px; max-width: 760px; margin: 0 auto;" class="prose">
-
-# Designing MQTT Auth with EIP-191 Signatures
-
-<div style="color: #64748b; font-size: 0.875rem; margin-bottom: 48px; font-family: monospace;">
-  2026-06-20 · Workshop 07 · MQTT · EIP-191 · TypeScript
-</div>
 
 MQTT's standard auth model is a username and password in the CONNECT packet. For a homelab or small deployment this is fine. For IoT at scale — where device identities matter and the broker is exposed — it's a structural weakness. Credentials can be replayed, stolen from firmware, or brute-forced. What we really want is **cryptographic proof of identity without shared secrets**.
 
@@ -164,4 +156,3 @@ The current PoC handles device-to-broker auth. Next: **on-chain device registry*
 
 *Written as part of Oracle Workshop 07 — MQTT + EVM systems design.*
 
-</div>
