@@ -1,0 +1,167 @@
+---
+layout: ../../layouts/Base.astro
+title: "Designing MQTT Auth with EIP-191 Signatures"
+date: "2026-06-20"
+description: "Why broker-level username/password auth is fragile for IoT — and how time-bounded cryptographic signatures solve replay attacks at the transport layer."
+workshop: 7
+tags: ["MQTT", "EIP-191", "TypeScript", "Workshop 07"]
+---
+
+import { Content as PostContent } from "./mqtt-siwe-design.mdx"
+
+<div style="padding: 120px 24px 80px; max-width: 760px; margin: 0 auto;" class="prose">
+
+# Designing MQTT Auth with EIP-191 Signatures
+
+<div style="color: #64748b; font-size: 0.875rem; margin-bottom: 48px; font-family: monospace;">
+  2026-06-20 · Workshop 07 · MQTT · EIP-191 · TypeScript
+</div>
+
+MQTT's standard auth model is a username and password in the CONNECT packet. For a homelab or small deployment this is fine. For IoT at scale — where device identities matter and the broker is exposed — it's a structural weakness. Credentials can be replayed, stolen from firmware, or brute-forced. What we really want is **cryptographic proof of identity without shared secrets**.
+
+This post documents the design I worked through during Workshop 07 for ARRA-MQ: an MQTT broker where devices authenticate by signing a time-bounded challenge using an Ethereum private key, verified with EIP-191.
+
+## Why Username/Password Fails at the Edge
+
+Broker-level auth with static credentials has three failure modes:
+
+1. **Replay**: capture a CONNECT packet, replay it. The broker has no way to distinguish the original from a copy.
+2. **Exfiltration**: credentials embedded in firmware can be extracted from flash memory.
+3. **No per-device identity**: every device sharing a credential pool is indistinguishable at the broker layer. Revocation kills all of them.
+
+The fix isn't a better password scheme — it's removing the shared secret entirely.
+
+## Time-Based Auth: Sign(timestamp + address)
+
+The core idea: a device holds a secp256k1 private key. To authenticate, it signs a message that includes:
+
+- Its Ethereum address
+- The current Unix timestamp (second-precision)
+- The target MQTT topic prefix it will publish to
+
+```typescript
+// Publisher: construct and sign the auth payload
+import { privateKeyToAccount } from "viem/accounts"
+import { toHex } from "viem"
+
+const account = privateKeyToAccount(DEVICE_PRIVATE_KEY)
+
+async function buildAuthToken(topicPrefix: string): Promise<string> {
+  const ts = Math.floor(Date.now() / 1000)
+  const message = `mqtt-auth:${account.address.toLowerCase()}:${ts}:${topicPrefix}`
+  const sig = await account.signMessage({ message })
+  // Encode as base64: `<address>.<ts>.<sig>`
+  return Buffer.from(
+    JSON.stringify({ address: account.address, ts, sig, topic: topicPrefix })
+  ).toString("base64")
+}
+
+// Pass token as MQTT password; address as username
+const password = await buildAuthToken("sensors/device-001")
+```
+
+On the broker side (NanoMQ webhook or auth plugin):
+
+```typescript
+// Broker auth verifier
+import { verifyMessage } from "viem"
+
+const TTL_SECONDS = 30
+
+async function verifyToken(username: string, password: string): Promise<boolean> {
+  let payload: { address: string; ts: number; sig: string; topic: string }
+  try {
+    payload = JSON.parse(Buffer.from(password, "base64").toString())
+  } catch {
+    return false
+  }
+
+  // 1. Address matches username
+  if (payload.address.toLowerCase() !== username.toLowerCase()) return false
+
+  // 2. Timestamp within TTL window
+  const now = Math.floor(Date.now() / 1000)
+  if (Math.abs(now - payload.ts) > TTL_SECONDS) return false
+
+  // 3. Reconstruct and verify EIP-191 signature
+  const message = `mqtt-auth:${payload.address.toLowerCase()}:${payload.ts}:${payload.topic}`
+  const recovered = await verifyMessage({
+    address: payload.address as `0x${string}`,
+    message,
+    signature: payload.sig as `0x${string}`,
+  })
+
+  return recovered
+}
+```
+
+## Replay Attack Mitigation
+
+Two layers stop replays:
+
+**TTL window**: the broker rejects any token where `|now - ts| > 30s`. A captured CONNECT packet is useless after 30 seconds. Devices need clock sync (NTP) — acceptable for any networked IoT device.
+
+**Topic binding in the signature**: the signed payload includes the topic prefix the device is authorised for. A token signed for `sensors/device-001` cannot be replayed against `actuators/device-001`. This prevents lateral movement inside the broker namespace.
+
+## The Pre-Sign Vulnerability for Control Commands
+
+There's a subtle problem with actuator commands. If a device pre-signs tokens and a controller stores them for later use (to reduce signing latency), an attacker who steals the controller's token store can issue control commands up to `TTL` seconds in the future — or more if clocks are loose.
+
+For read-only sensors this is low-risk. For control commands (relays, actuators, safety systems) it's unacceptable.
+
+## Server Epoch Solution
+
+The fix: the broker issues a **server epoch** — a short-lived nonce — that must be included in the signed payload. Devices request a fresh epoch before each CONNECT, and the broker only accepts signatures over its own issued epochs.
+
+```typescript
+// Broker: issue epoch
+const epochs = new Map<string, { nonce: string; expires: number }>()
+
+function issueEpoch(deviceAddress: string): string {
+  const nonce = crypto.randomUUID()
+  epochs.set(deviceAddress.toLowerCase(), {
+    nonce,
+    expires: Date.now() + 15_000, // 15s to use it
+  })
+  return nonce
+}
+
+// Device signs: mqtt-auth:<address>:<epoch-nonce>:<topic>
+// Broker verifies the nonce matches and hasn't expired, then deletes it (one-use)
+```
+
+This makes each authentication exchange unique and non-replayable regardless of clock skew.
+
+## EIP-191 vs EIP-712
+
+We use **EIP-191** (`personal_sign` / `signMessage`) for this PoC because:
+
+- Simpler to implement — no typed struct encoding
+- Broadly supported across all wallet/key libraries
+- Human-readable message makes it auditable in logs
+
+**EIP-712** would be the production choice: structured data with a domain separator prevents cross-protocol replay (a signature for MQTT auth can't be reused for a contract call). For Workshop 07, EIP-191 is the right starting point.
+
+## Micro-Bridge Topology
+
+In production the auth verifier shouldn't run in the broker process itself. The topology we're designing:
+
+```
+Device → MQTT CONNECT (signed token) → NanoMQ → Auth Webhook → ARRA-MQ Auth Service
+                                                                    ↓
+                                                             viem verifyMessage
+                                                                    ↓
+                                                            200 OK / 401 Denied
+```
+
+NanoMQ's HTTP auth webhook plugin handles this cleanly: every CONNECT triggers a POST to the auth service, which returns `allow` or `deny`. The broker stays stateless with respect to identity; the auth service holds the epoch store and on-chain address registry.
+
+## What's Next
+
+The current PoC handles device-to-broker auth. Next: **on-chain device registry** — a simple Solidity mapping of `address → bool` so device revocation is a single transaction rather than a config file change. That connects ARRA-MQ to the broader goal of blockchain-backed IoT identity.
+
+---
+
+*Written as part of Oracle Workshop 07 — MQTT + EVM systems design.*
+
+</div>

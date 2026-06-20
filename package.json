@@ -1,17 +1,26 @@
 {
   "name": "sombo-landing",
   "type": "module",
-  "version": "0.0.1",
-  "engines": {
-    "node": ">=22.12.0"
-  },
+  "version": "0.1.0",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
+    "preview": "astro preview"
   },
   "dependencies": {
-    "astro": "^6.4.7"
+    "@astrojs/cloudflare": "^12.6.12",
+    "@astrojs/mdx": "^4.3.0",
+    "@astrojs/react": "^4.3.0",
+    "@astrojs/sitemap": "^3.4.0",
+    "@tailwindcss/vite": "^4.1.18",
+    "astro": "^5.17.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "tailwindcss": "^4.1.18",
+    "viem": "^2.21.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3",
+    "wrangler": "^4.63.0"
   }
 }
