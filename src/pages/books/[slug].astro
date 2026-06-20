@@ -14,6 +14,8 @@ const { book } = Astro.props
 const { Content } = await render(book)
 const { title, titleTh, description, author, date, pdfUrl, sourceUrl, tags } = book.data
 
+const resolvedSourceUrl = sourceUrl || `https://github.com/MEYD-605/sombo-landing/blob/main/src/content/books/${book.id}`
+
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "Book",
@@ -83,29 +85,182 @@ const articleSchema = {
 
     {/* End-of-content actions: Markdown source → PDF → back */}
     <footer class="border-t border-gold/10 pt-8 space-y-6">
-      {/* Markdown source link for AI/copy */}
-      {sourceUrl && (
-        <div class="bg-raised/40 border border-gold/10 rounded-xs p-4 space-y-2">
-          <p class="text-sm text-text-warm">อ่านจบแล้ว? ก๊อป Markdown ให้ AI อ่านได้:</p>
-          <a href={sourceUrl} target="_blank" rel="noopener noreferrer" class="text-sm text-patina hover:text-gold font-mono transition-colors">
-            Markdown source บน GitHub ↗
-          </a>
-        </div>
-      )}
-      {/* PDF download + preview */}
-      <div class="flex gap-3 flex-wrap">
+      {/* Markdown source link for AI/copy — always show it so AI/users can grab raw text */}
+      <div class="bg-raised/40 border border-gold/10 rounded-xs p-4 space-y-2">
+        <p class="text-sm text-text-warm font-sans font-semibold">ก๊อป Markdown สำหรับ AI / Copy raw text:</p>
+        <p class="text-xs text-text-muted">คุณสามารถดึงไฟล์ Markdown ต้นฉบับไปป้อนให้ AI อ่านเนื้อหาทั้งหมดได้ที่นี่</p>
+        <a href={resolvedSourceUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-sm text-patina hover:text-gold font-mono transition-colors mt-1">
+          GitHub Markdown Source ↗
+        </a>
+      </div>
+
+      {/* PDF download + preview buttons */}
+      <div class="flex gap-3 flex-wrap items-center">
         {pdfUrl && (
           <a href={pdfUrl} download class="inline-flex items-center gap-1.5 bg-gold text-lacquer-deep font-semibold text-sm px-4 py-2 rounded-xs hover:bg-gold-rich transition-colors focus-visible:outline-2 focus-visible:outline-gold">
             ดาวน์โหลด PDF
           </a>
         )}
         {pdfUrl && (
-          <a href={`/books/preview?url=${pdfUrl}`} class="inline-flex items-center gap-1.5 border border-gold/40 text-gold text-sm px-4 py-2 rounded-xs hover:border-gold hover:bg-gold/5 transition-colors focus-visible:outline-2 focus-visible:outline-gold">
-            ตัวอย่าง PDF
+          <a href="#pdf-preview-section" class="inline-flex items-center gap-1.5 border border-gold/40 text-gold text-sm px-4 py-2 rounded-xs hover:border-gold hover:bg-gold/5 transition-colors focus-visible:outline-2 focus-visible:outline-gold">
+            ดูตัวอย่าง PDF ออนไลน์ ↓
           </a>
         )}
       </div>
-      <a href="/#books" class="block text-text-muted hover:text-gold font-mono text-sm transition-colors">← กลับหน้าหลัก</a>
+
+      {/* Inline PDF Viewer directly below the action buttons */}
+      {pdfUrl && (
+        <div class="mt-8 space-y-4 border-t border-gold/10 pt-8 scroll-mt-6" id="pdf-preview-section">
+          <div class="flex items-center justify-between border-b border-gold/10 pb-2">
+            <h3 class="text-base font-sans font-bold text-champagne flex items-center gap-2">
+              <span>📖 ตัวอย่างไฟล์ PDF / PDF Preview</span>
+            </h3>
+            <div class="flex gap-2">
+              <a href={pdfUrl} download class="text-xs text-gold hover:text-gold-rich font-mono hover:underline">ดาวน์โหลด PDF ↗</a>
+            </div>
+          </div>
+          
+          <div class="flex flex-wrap items-center justify-between bg-raised/40 border border-gold/10 p-3 rounded-xs gap-4 font-mono text-xs text-gold">
+            <div class="flex items-center gap-2">
+              <button id="prev-page" class="px-2.5 py-1 bg-gold/5 border border-gold/15 hover:border-gold/45 rounded-xs transition-all disabled:opacity-30 disabled:pointer-events-none cursor-pointer">Prev / ย้อนกลับ</button>
+              <span class="text-text-muted">|</span>
+              <button id="next-page" class="px-2.5 py-1 bg-gold/5 border border-gold/15 hover:border-gold/45 rounded-xs transition-all disabled:opacity-30 disabled:pointer-events-none cursor-pointer">Next / ถัดไป</button>
+            </div>
+
+            <div class="flex items-center gap-1.5">
+              <span>Page:</span>
+              <span id="page-num" class="text-champagne font-bold">0</span>
+              <span>/</span>
+              <span id="page-count" class="text-text-muted">0</span>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button id="zoom-out" class="px-2 py-0.5 bg-gold/5 border border-gold/15 hover:border-gold/45 rounded-xs cursor-pointer">- ซูมออก</button>
+              <span id="zoom-percent" class="text-text-muted">100%</span>
+              <button id="zoom-in" class="px-2 py-0.5 bg-gold/5 border border-gold/15 hover:border-gold/45 rounded-xs cursor-pointer">+ ซูมเข้า</button>
+            </div>
+          </div>
+
+          <div class="flex justify-center bg-raised/20 border border-gold/10 p-4 rounded-xs min-h-[500px] overflow-auto relative">
+            <div id="loading-spinner" class="absolute inset-0 flex items-center justify-center bg-lacquer/80 z-10 font-mono text-gold text-xs">
+              <div class="flex flex-col items-center gap-3">
+                <svg class="animate-spin h-5 w-5 text-gold" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span>กำลังโหลดและประมวลผลหน้า PDF...</span>
+              </div>
+            </div>
+            <canvas id="pdf-canvas" class="shadow-2xl max-w-full bg-white"></canvas>
+          </div>
+        </div>
+      )}
+
+      <a href="/#books" class="block text-text-muted hover:text-gold font-mono text-sm transition-colors pt-4">← กลับหน้าหลัก</a>
     </footer>
   </article>
 </Base>
+
+{pdfUrl && (
+  <>
+    <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script is:inline define:vars={{ pdfUrl }}>
+      // Configure PDF.js worker
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+      let pdfDoc = null;
+      let pageNum = 1;
+      let pageRendering = false;
+      let pageNumPending = null;
+      let scale = 1.0;
+      const canvas = document.getElementById('pdf-canvas');
+      const ctx = canvas.getContext('2d');
+
+      function renderPage(num) {
+        pageRendering = true;
+        document.getElementById('loading-spinner').classList.remove('hidden');
+        
+        pdfDoc.getPage(num).then((page) => {
+          const viewport = page.getViewport({ scale });
+          canvas.height = viewport.height;
+          canvas.width = viewport.width;
+
+          const renderContext = {
+            canvasContext: ctx,
+            viewport: viewport
+          };
+          const renderTask = page.render(renderContext);
+
+          renderTask.promise.then(() => {
+            pageRendering = false;
+            document.getElementById('loading-spinner').classList.add('hidden');
+            if (pageNumPending !== null) {
+              renderPage(pageNumPending);
+              pageNumPending = null;
+            }
+          });
+        });
+
+        document.getElementById('page-num').textContent = num;
+      }
+
+      function queueRenderPage(num) {
+        if (pageRendering) {
+          pageNumPending = num;
+        } else {
+          renderPage(num);
+        }
+      }
+
+      function onPrevPage() {
+        if (pageNum <= 1) return;
+        pageNum--;
+        queueRenderPage(pageNum);
+        updateButtons();
+      }
+
+      function onNextPage() {
+        if (pageNum >= pdfDoc.numPages) return;
+        pageNum++;
+        queueRenderPage(pageNum);
+        updateButtons();
+      }
+
+      function updateButtons() {
+        document.getElementById('prev-page').disabled = (pageNum <= 1);
+        document.getElementById('next-page').disabled = (pageNum >= pdfDoc.numPages);
+      }
+
+      function onZoomIn() {
+        scale += 0.25;
+        document.getElementById('zoom-percent').textContent = `${Math.round(scale * 100)}%`;
+        queueRenderPage(pageNum);
+      }
+
+      function onZoomOut() {
+        if (scale <= 0.5) return;
+        scale -= 0.25;
+        document.getElementById('zoom-percent').textContent = `${Math.round(scale * 100)}%`;
+        queueRenderPage(pageNum);
+      }
+
+      document.getElementById('prev-page').addEventListener('click', onPrevPage);
+      document.getElementById('next-page').addEventListener('click', onNextPage);
+      document.getElementById('zoom-in').addEventListener('click', onZoomIn);
+      document.getElementById('zoom-out').addEventListener('click', onZoomOut);
+
+      pdfjsLib.getDocument(pdfUrl).promise.then((pdfDoc_) => {
+        pdfDoc = pdfDoc_;
+        document.getElementById('page-count').textContent = pdfDoc.numPages;
+        renderPage(pageNum);
+        updateButtons();
+      }).catch(err => {
+        console.error('Error loading PDF:', err);
+        const spinner = document.getElementById('loading-spinner');
+        if (spinner) {
+          spinner.textContent = 'ไม่สามารถโหลดหน้าพรีวิว PDF ได้ (กรุณาดาวน์โหลดอ่านโดยตรง)';
+        }
+      });
+    </script>
+  </>
+)}
