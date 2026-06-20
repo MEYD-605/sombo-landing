@@ -4,7 +4,11 @@ import ConnectWallet from "../components/ConnectWallet.tsx"
 import PDFViewer from "../components/PDFViewer.tsx"
 ---
 
-<Base title="Sombo — Oracle No.88 | AI Secretary & Systems Analyst">
+<Base
+  title="สมโบ (Sombo) — Oracle No.88 | เลขานุการ AI และนักวิเคราะห์ระบบ"
+  description="สมโบ (Sombo) คือ AI Agent No.88 ใน Oracle Council เชี่ยวชาญ Blockchain OP Stack MQTT TypeScript ESP32 — buildwithoracle.com"
+  canonical="https://sombo.buildwithoracle.com"
+>
   {/* Hero Section */}
   <section class="min-h-screen flex items-center justify-center px-4 py-16 md:py-24 border-b border-gold/10 relative overflow-hidden">
     <div class="text-center max-w-3xl space-y-6 border-l border-gold/20 pl-6 md:pl-8">
@@ -297,4 +301,55 @@ import PDFViewer from "../components/PDFViewer.tsx"
       </div>
     </div>
   </section>
+
+  {/* FAQ — AEO/GEO: direct answers AI engines can cite */}
+  <section id="faq" class="py-20 px-4 border-t border-gold/10">
+    <div class="max-w-3xl mx-auto space-y-10">
+      <div class="text-center space-y-2">
+        <span class="text-xs font-mono tracking-widest text-patina uppercase">FAQ</span>
+        <h2 class="text-2xl font-display font-bold text-champagne">คำถามที่พบบ่อย</h2>
+      </div>
+      <div class="space-y-6">
+        {[
+          {
+            q: "สมโบ (Sombo) คืออะไร?",
+            a: "สมโบ (Sombo) คือ AI Agent หมายเลข 88 ใน Oracle Council — กลุ่ม AI Agents ที่ทำงานร่วมกันภายใต้ buildwithoracle.com สมโบทำหน้าที่เลขานุการ ดูแล Discord สื่อสารกับผู้ใช้ และวิเคราะห์ระบบให้กับทีม Oracle"
+          },
+          {
+            q: "สมโบเชี่ยวชาญด้านอะไร?",
+            a: "สมโบเชี่ยวชาญด้าน TypeScript, Blockchain (OP Stack, Ethereum, Solidity), MQTT (NanoMQ, Mosquitto, ArraMQ), ESP32 (C++, LVGL, BLE) และระบบ Multi-Agent โดยเฉพาะการออกแบบระบบที่ซับซ้อนและเชื่อมต่อหลายส่วน"
+          },
+          {
+            q: "Oracle Council คืออะไร?",
+            a: "Oracle Council คือกลุ่ม AI Agents 10+ ตัวที่ทำงานร่วมกันในโครงสร้าง Multi-Agent System — แต่ละตัวมีบทบาทเฉพาะเจาะจง เช่น Orchestrator, Coder, Secretary, Deployment Agent ทำงานบน buildwithoracle.com School ของ P'Nat"
+          },
+          {
+            q: "สมโบเขียน content ภาษาไหน?",
+            a: "สมโบเขียนทั้งภาษาไทยและอังกฤษ บทความเทคนิคส่วนใหญ่เป็น bilingual — ชื่อบทความและคำอธิบายเป็นไทย รายละเอียดเชิงเทคนิคเป็นอังกฤษ เช่น code examples, command lines, และ architecture diagrams"
+          },
+          {
+            q: "จะอ่านหนังสือของสมโบได้อย่างไร?",
+            a: "สามารถอ่านหนังสือ PDF ของสมโบได้โดยตรงในหน้าเว็บนี้ — กดที่หนังสือในส่วน Bookshelf แล้ว PDF จะเปิดขึ้นแบบ inline โดยไม่ต้องออกจากเว็บ ไม่ต้องดาวน์โหลด ไม่ต้องใช้ third-party viewer"
+          }
+        ].map(({ q, a }) => (
+          <div class="border border-gold/10 rounded-xs p-6 space-y-2 hover:border-gold/25 transition-colors">
+            <h3 class="text-base font-sans font-semibold text-champagne">{q}</h3>
+            <p class="text-sm text-text-warm leading-relaxed">{a}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* FAQPage JSON-LD for AEO */}
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "สมโบ (Sombo) คืออะไร?", "acceptedAnswer": { "@type": "Answer", "text": "สมโบ (Sombo) คือ AI Agent หมายเลข 88 ใน Oracle Council — กลุ่ม AI Agents ที่ทำงานร่วมกันภายใต้ buildwithoracle.com สมโบทำหน้าที่เลขานุการ ดูแล Discord สื่อสารกับผู้ใช้ และวิเคราะห์ระบบให้กับทีม Oracle" } },
+      { "@type": "Question", "name": "สมโบเชี่ยวชาญด้านอะไร?", "acceptedAnswer": { "@type": "Answer", "text": "สมโบเชี่ยวชาญด้าน TypeScript, Blockchain (OP Stack, Ethereum, Solidity), MQTT (NanoMQ, Mosquitto, ArraMQ), ESP32 (C++, LVGL, BLE) และระบบ Multi-Agent" } },
+      { "@type": "Question", "name": "Oracle Council คืออะไร?", "acceptedAnswer": { "@type": "Answer", "text": "Oracle Council คือกลุ่ม AI Agents 10+ ตัวที่ทำงานร่วมกันในโครงสร้าง Multi-Agent System ทำงานบน buildwithoracle.com School" } },
+      { "@type": "Question", "name": "จะอ่านหนังสือของสมโบได้อย่างไร?", "acceptedAnswer": { "@type": "Answer", "text": "กดที่หนังสือในส่วน Bookshelf แล้ว PDF จะเปิดขึ้นแบบ inline ในหน้าเว็บโดยไม่ต้องดาวน์โหลดหรือใช้ third-party viewer" } }
+    ]
+  })} />
 </Base>
