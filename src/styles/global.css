@@ -1,48 +1,104 @@
 @import "tailwindcss";
 
-:root {
-  --primary: #8b5cf6;
-  --secondary: #06b6d4;
-  --accent: #f472b6;
-  --bg: #0f0f1a;
-  --surface: #1a1a2e;
-  --text: #e2e8f0;
-  --muted: #94a3b8;
+@layer base {
+  /* Default: Dark Mode (Obsidian Cyberpunk) */
+  :root {
+    --color-primary: oklch(68% 0.22 280); /* Bright Violet */
+    --color-secondary: oklch(74% 0.16 200); /* Neon Cyan */
+    --color-accent: oklch(76% 0.18 340); /* Cyber Pink */
+    
+    /* Surfaces */
+    --color-bg: oklch(9% 0.015 280); /* Deep Obsidian */
+    --color-surface-deep: oklch(6% 0.01 280);
+    --color-raised: oklch(14% 0.018 280); /* Raised violet-dark panels */
+    
+    /* Text */
+    --color-text-primary: oklch(94% 0.01 280); /* Soft white with violet tint */
+    --color-text-warm: oklch(88% 0.008 280);
+    --color-text-muted: oklch(75% 0.01 280);
+    
+    /* Hairlines & borders */
+    --color-border: oklch(22% 0.04 280 / 0.4);
+    --color-border-strong: oklch(40% 0.12 280 / 0.5);
+
+    /* Semantic Buttons */
+    --color-btn-primary-bg: var(--color-primary);
+    --color-btn-primary-text: oklch(6% 0.01 280);
+    --color-btn-primary-hover-bg: oklch(60% 0.22 280);
+    --color-btn-primary-hover-text: oklch(98% 0.005 280);
+
+    --color-btn-outline-text: var(--color-secondary);
+    --color-btn-outline-border: var(--color-border-strong);
+    --color-btn-outline-hover-bg: var(--color-secondary);
+    --color-btn-outline-hover-text: oklch(6% 0.01 280);
+  }
+
+  /* Light / Paper Mode (Ivory Cyberpunk - High Contrast) */
+  html.light {
+    --color-primary: oklch(48% 0.22 280); /* Darker violet for accessibility */
+    --color-secondary: oklch(44% 0.15 200); /* Darker cyan */
+    --color-accent: oklch(50% 0.18 340); /* Darker pink */
+    
+    /* Surfaces */
+    --color-bg: oklch(98% 0.005 280); /* Ivory violet background */
+    --color-surface-deep: oklch(94% 0.008 280);
+    --color-raised: oklch(100% 0 0); /* Pure white panels */
+    
+    /* Text */
+    --color-text-primary: oklch(15% 0.02 280); /* Obsidian black text */
+    --color-text-warm: oklch(22% 0.02 280);
+    --color-text-muted: oklch(42% 0.02 280);
+    
+    /* Hairlines & borders */
+    --color-border: oklch(48% 0.10 280 / 0.12);
+    --color-border-strong: oklch(48% 0.10 280 / 0.6);
+
+    /* Semantic Buttons - High Contrast for Accessibility */
+    --color-btn-primary-bg: var(--color-primary); /* oklch(48%...) */
+    --color-btn-primary-text: oklch(98% 0.005 280); /* High contrast white on dark violet (>4.5:1) */
+    --color-btn-primary-hover-bg: oklch(40% 0.20 280); /* Active states */
+    --color-btn-primary-hover-text: oklch(98% 0.005 280);
+
+    --color-btn-outline-text: oklch(45% 0.18 280); /* High contrast deep violet on white background (>6:1) */
+    --color-btn-outline-border: oklch(48% 0.10 280 / 0.6);
+    --color-btn-outline-hover-bg: var(--color-primary);
+    --color-btn-outline-hover-text: oklch(98% 0.005 280);
+  }
 }
 
 html {
   scroll-behavior: smooth;
-  background-color: var(--bg);
-  color: var(--text);
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
 }
 
 body {
-  font-family: "Inter", system-ui, sans-serif;
-  background: var(--bg);
+  font-family: var(--font-sans);
+  background: var(--color-bg);
   min-height: 100vh;
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #8b5cf6, #06b6d4, #f472b6);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary), var(--color-accent));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .card-glass {
-  background: rgba(26, 26, 46, 0.7);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(139, 92, 246, 0.2);
+  background: var(--color-raised);
+  border: 1px solid var(--color-border);
   border-radius: 12px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
 }
 
 .prose a {
-  color: var(--secondary);
+  color: var(--color-secondary);
   text-decoration: underline;
 }
 
 .prose h1, .prose h2, .prose h3 {
-  color: #e2e8f0;
+  color: var(--color-text-primary);
 }
 
 .prose code {
@@ -50,10 +106,10 @@ body {
   padding: 2px 6px;
   border-radius: 4px;
   font-size: 0.875em;
-  color: #c4b5fd;
+  color: var(--color-primary);
 }
 
 .prose pre {
-  background: #1e1e2e !important;
-  border: 1px solid rgba(139, 92, 246, 0.2);
+  background: var(--color-surface-deep) !important;
+  border: 1px solid var(--color-border);
 }

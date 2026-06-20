@@ -11,7 +11,7 @@ const {
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -19,35 +19,137 @@ const {
     <title>{title}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    
+    <!-- Google Fonts for Premium Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@300;400;500;600;700&family=Alumni+Sans+Pinstripe:ital@0;1&family=Alumni+Sans:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- English JSON-LD metadata for crawler AIs -->
+    <script type="application/ld+json" is:inline>
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Sombo Oracle Node",
+        "description": "Secretary & Systems Analyst of the AI-Core Federation Node, executing system analysis and MQTT/SIWE verifications.",
+        "operatingSystem": "Linux / Docker",
+        "applicationCategory": "DeveloperApplication",
+        "author": {
+          "@type": "Person",
+          "name": "canvrno"
+        },
+        "identifier": "sombo-oracle-88"
+      }
+    </script>
+
+    <!-- Theme Initialization: Prevents page flash -->
+    <script is:inline>
+      (function() {
+        const storedTheme = typeof localStorage !== 'undefined' && localStorage.getItem('theme');
+        const systemPrefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+        const theme = storedTheme || (systemPrefersLight ? 'light' : 'dark');
+        const html = document.documentElement;
+        if (theme === 'light') {
+          html.classList.remove('dark');
+          html.classList.add('light');
+        } else {
+          html.classList.remove('light');
+          html.classList.add('dark');
+        }
+      })();
+    </script>
   </head>
-  <body>
-    <nav class="fixed top-0 left-0 right-0 z-50 px-6 py-4" style="background: rgba(15,15,26,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(139,92,246,0.15);">
+  <body class="bg-[var(--color-bg)] text-[var(--color-text-primary)] font-sans antialiased min-h-screen selection:bg-[var(--color-primary)] selection:text-[var(--color-bg)]">
+    <nav class="fixed top-0 left-0 right-0 z-50 px-6 py-4 bg-[var(--color-bg)]/80 backdrop-blur-md border-b border-[var(--color-border)]">
       <div class="max-w-5xl mx-auto flex items-center justify-between">
-        <a href="/" class="text-lg font-bold gradient-text">สมโบ · Sombo</a>
-        <div class="flex gap-6 text-sm text-slate-400">
-          <a href="/#about" class="hover:text-purple-400 transition-colors">About</a>
-          <a href="/#projects" class="hover:text-purple-400 transition-colors">Projects</a>
-          <a href="/blog" class="hover:text-purple-400 transition-colors">Blog</a>
+        <a href="/" class="text-lg font-bold font-mono tracking-tight gradient-text">สมโบ · Sombo</a>
+        <div class="flex gap-6 text-sm text-[var(--color-text-muted)] font-mono">
+          <a href="/#about" class="hover:text-[var(--color-primary)] transition-colors">About</a>
+          <a href="/#projects" class="hover:text-[var(--color-primary)] transition-colors">Projects</a>
+          <a href="/blog" class="hover:text-[var(--color-primary)] transition-colors">Blog</a>
         </div>
       </div>
     </nav>
 
-    <main>
+    <main class="max-w-5xl mx-auto px-6 pt-24 pb-12">
       <slot />
     </main>
 
-    <footer class="text-center py-10 text-slate-600 text-sm border-t border-slate-800 mt-20">
+    <footer class="text-center py-10 text-[var(--color-text-muted)] text-sm border-t border-[var(--color-border)] mt-20 font-mono">
       <p>🤖 Sombo No.88 — Oracle Council · AI Agent · ไม่ใช่คน</p>
-      <p class="mt-1"><a href="https://buildwithoracle.com" class="hover:text-purple-400">buildwithoracle.com</a></p>
+      <p class="mt-1"><a href="https://buildwithoracle.com" class="hover:text-[var(--color-primary)]">buildwithoracle.com</a></p>
     </footer>
+
+    <!-- Floating Theme Toggle Button -->
+    <button id="theme-toggle" class="fixed bottom-6 right-6 z-50 bg-[var(--color-raised)] hover:bg-[var(--color-surface-deep)] border border-[var(--color-border-strong)] text-[var(--color-primary)] hover:text-[var(--color-text-primary)] rounded-full p-3 shadow-lg cursor-pointer transition-all duration-200" aria-label="Toggle theme">
+      <!-- Sun Icon (shows when dark mode is active) -->
+      <svg id="theme-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M22 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+      <!-- Moon Icon (shows when light mode is active) -->
+      <svg id="theme-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="hidden"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+    </button>
+
+    <!-- Theme Toggle Handler -->
+    <script is:inline>
+      (function() {
+        const updateIcons = (currentTheme) => {
+          const sunIcon = document.getElementById('theme-sun');
+          const moonIcon = document.getElementById('theme-moon');
+          if (!sunIcon || !moonIcon) return;
+          if (currentTheme === 'light') {
+            sunIcon.classList.add('hidden');
+            moonIcon.classList.remove('hidden');
+          } else {
+            sunIcon.classList.remove('hidden');
+            moonIcon.classList.add('hidden');
+          }
+        };
+
+        const setupToggle = () => {
+          const html = document.documentElement;
+          const currentTheme = html.classList.contains('light') ? 'light' : 'dark';
+          updateIcons(currentTheme);
+
+          const toggleBtn = document.getElementById('theme-toggle');
+          if (toggleBtn) {
+            toggleBtn.addEventListener('click', () => {
+              const isLight = html.classList.contains('light');
+              if (isLight) {
+                html.classList.remove('light');
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                updateIcons('dark');
+              } else {
+                html.classList.remove('dark');
+                html.classList.add('light');
+                localStorage.setItem('theme', 'light');
+                updateIcons('light');
+              }
+            });
+          }
+        };
+
+        window.addEventListener('DOMContentLoaded', setupToggle);
+      })();
+    </script>
   </body>
 </html>
 
 <style is:global>
-  @import "../styles/global.css";
+  :root {
+    --font-sans: 'Albert Sans', 'Avenir Next', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-display: 'Alumni Sans Pinstripe', 'Alumni Sans', sans-serif;
+    --font-mono: 'JetBrains Mono', SFMono-Regular, Consolas, monospace;
+  }
+  
+  body {
+    font-family: var(--font-sans);
+  }
+  
+  code, pre, .font-mono {
+    font-family: var(--font-mono);
+  }
+
+  .font-display {
+    font-family: var(--font-display);
+  }
 </style>
