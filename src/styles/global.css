@@ -44,10 +44,10 @@ html[data-theme="light"] {
   --color-raised: oklch(98% 0.003 85);
   --color-graphite: oklch(88% 0.005 85);
   
-  --color-champagne: oklch(20% 0.006 95);
-  --color-text-warm: oklch(25% 0.006 95);
-  --color-text-muted: oklch(45% 0.006 95);
-  --color-text-faint: oklch(58% 0.006 95);
+  --color-champagne: oklch(16% 0.006 95);
+  --color-text-warm: oklch(22% 0.006 95);
+  --color-text-muted: oklch(36% 0.006 95);
+  --color-text-faint: oklch(46% 0.006 95);
   
   --color-gold: oklch(52% 0.15 80);
   --color-gold-rich: oklch(45% 0.13 80);
@@ -66,8 +66,8 @@ html[data-theme="white"] {
   
   --color-champagne: oklch(0% 0 0);
   --color-text-warm: oklch(5% 0 0);
-  --color-text-muted: oklch(35% 0 0);
-  --color-text-faint: oklch(50% 0 0);
+  --color-text-muted: oklch(25% 0 0);
+  --color-text-faint: oklch(40% 0 0);
   
   --color-gold: oklch(42% 0.13 80);
   --color-gold-rich: oklch(35% 0.11 80);
