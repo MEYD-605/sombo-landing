@@ -1,0 +1,178 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base title="PDF Reader | Sombo No.88" description="Bilingual interactive OP Stack guide reader. Inline PDF.js rendering.">
+  <div class="max-w-4xl mx-auto py-8 px-4 space-y-6">
+    <div class="flex flex-wrap items-center justify-between border-b border-gold/15 pb-4">
+      <div class="space-y-1">
+        <a href="/" class="text-xs text-gold hover:text-gold-rich font-mono">&larr; Back to Home / กลับหน้าแรก</a>
+        <h1 id="book-title" class="text-2xl font-sans font-bold text-champagne">Loading Booklet...</h1>
+      </div>
+      <div class="flex items-center gap-3">
+        <a id="download-link" href="#" download class="px-3 py-1.5 bg-gold/10 text-gold border border-gold/25 hover:bg-gold hover:text-lacquer text-xs font-mono font-medium rounded-xs transition-all">
+          Download PDF
+        </a>
+        <a href="https://github.com/MEYD-605/sombo-landing" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 border border-gold/15 hover:border-gold/45 text-text-warm text-xs font-mono rounded-xs transition-all">
+          Source Code
+        </a>
+      </div>
+    </div>
+
+    <!-- Viewer Controls -->
+    <div class="flex flex-wrap items-center justify-between bg-raised/40 border border-gold/10 p-3 rounded-xs gap-4 font-mono text-xs text-gold">
+      <div class="flex items-center gap-2">
+        <button id="prev-page" class="px-2.5 py-1 bg-gold/5 border border-gold/15 hover:border-gold/45 rounded-xs transition-all disabled:opacity-30 disabled:pointer-events-none cursor-pointer">Prev / ย้อนกลับ</button>
+        <span class="text-text-muted">|</span>
+        <button id="next-page" class="px-2.5 py-1 bg-gold/5 border border-gold/15 hover:border-gold/45 rounded-xs transition-all disabled:opacity-30 disabled:pointer-events-none cursor-pointer">Next / ถัดไป</button>
+      </div>
+
+      <div class="flex items-center gap-1.5">
+        <span>Page:</span>
+        <span id="page-num" class="text-champagne font-bold font-mono">0</span>
+        <span>/</span>
+        <span id="page-count" class="text-text-muted">0</span>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button id="zoom-out" class="px-2 py-0.5 bg-gold/5 border border-gold/15 hover:border-gold/45 rounded-xs cursor-pointer">- Zoom</button>
+        <span id="zoom-percent" class="text-text-muted">125%</span>
+        <button id="zoom-in" class="px-2 py-0.5 bg-gold/5 border border-gold/15 hover:border-gold/45 rounded-xs cursor-pointer">+ Zoom</button>
+      </div>
+    </div>
+
+    <!-- Canvas Container -->
+    <div class="flex justify-center bg-raised/20 border border-gold/10 p-4 rounded-xs min-h-[600px] overflow-auto relative">
+      <div id="loading-spinner" class="absolute inset-0 flex items-center justify-center bg-lacquer/80 z-10 font-mono text-gold text-xs">
+        <div class="flex flex-col items-center gap-3">
+          <svg class="animate-spin h-5 w-5 text-gold" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span>Rendering PDF pages...</span>
+        </div>
+      </div>
+      <canvas id="pdf-canvas" class="shadow-2xl max-w-full bg-white"></canvas>
+    </div>
+  </div>
+
+  <!-- PDF.js from Cloudflare CDN -->
+  <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script is:inline>
+    // Configure PDF.js worker
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    let pdfDoc = null;
+    let pageNum = 1;
+    let pageRendering = false;
+    let pageNumPending = null;
+    let scale = 1.25;
+    const canvas = document.getElementById('pdf-canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Get URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const fileUrl = urlParams.get('file') || '/books/2026-06-19_opstack-l2-audit.pdf';
+
+    // Set title and download link dynamically
+    const bookTitle = document.getElementById('book-title');
+    const downloadLink = document.getElementById('download-link');
+    downloadLink.href = fileUrl;
+    
+    const filename = fileUrl.split('/').pop();
+    if (filename.includes('audit')) {
+      bookTitle.textContent = 'OP Stack L2 consensus recovery audit booklet / เล่ม 1: บันทึกการกู้ชีพบล็อกเชน L2';
+    } else if (filename.includes('nova')) {
+      bookTitle.textContent = 'OP Stack Nova Chain sync audit booklet / เล่ม 2: คู่มือการซิงก์สายเชน Nova';
+    } else {
+      bookTitle.textContent = filename;
+    }
+
+    function renderPage(num) {
+      pageRendering = true;
+      document.getElementById('loading-spinner').classList.remove('hidden');
+      
+      pdfDoc.getPage(num).then((page) => {
+        const viewport = page.getViewport({ scale });
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        const renderContext = {
+          canvasContext: ctx,
+          viewport: viewport
+        };
+        const renderTask = page.render(renderContext);
+
+        renderTask.promise.then(() => {
+          pageRendering = false;
+          document.getElementById('loading-spinner').classList.add('hidden');
+          if (pageNumPending !== null) {
+            renderPage(pageNumPending);
+            pageNumPending = null;
+          }
+        });
+      });
+
+      document.getElementById('page-num').textContent = num;
+    }
+
+    function queueRenderPage(num) {
+      if (pageRendering) {
+        pageNumPending = num;
+      } else {
+        renderPage(num);
+      }
+    }
+
+    function onPrevPage() {
+      if (pageNum <= 1) return;
+      pageNum--;
+      queueRenderPage(pageNum);
+      updateButtons();
+    }
+
+    // Attach listener for Prev/Next buttons
+    function onNextPage() {
+      if (pageNum >= pdfDoc.numPages) return;
+      pageNum++;
+      queueRenderPage(pageNum);
+      updateButtons();
+    }
+
+    function updateButtons() {
+      document.getElementById('prev-page').disabled = (pageNum <= 1);
+      document.getElementById('next-page').disabled = (pageNum >= pdfDoc.numPages);
+    }
+
+    function onZoomIn() {
+      scale += 0.25;
+      document.getElementById('zoom-percent').textContent = `${Math.round(scale * 100)}%`;
+      queueRenderPage(pageNum);
+    }
+
+    function onZoomOut() {
+      if (scale <= 0.75) return;
+      scale -= 0.25;
+      document.getElementById('zoom-percent').textContent = `${Math.round(scale * 100)}%`;
+      queueRenderPage(pageNum);
+    }
+
+    // Attach listeners
+    document.getElementById('prev-page').addEventListener('click', onPrevPage);
+    document.getElementById('next-page').addEventListener('click', onNextPage);
+    document.getElementById('zoom-in').addEventListener('click', onZoomIn);
+    document.getElementById('zoom-out').addEventListener('click', onZoomOut);
+
+    // Load PDF
+    pdfjsLib.getDocument(fileUrl).promise.then((pdfDoc_) => {
+      pdfDoc = pdfDoc_;
+      document.getElementById('page-count').textContent = pdfDoc.numPages;
+      renderPage(pageNum);
+      updateButtons();
+    }).catch(err => {
+      console.error('Error loading PDF:', err);
+      bookTitle.textContent = 'Error loading booklet';
+      document.getElementById('loading-spinner').textContent = 'Failed to load PDF. Please download directly.';
+    });
+  </script>
+</Base>

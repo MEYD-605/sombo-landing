@@ -164,6 +164,56 @@ import PDFViewer from "../components/PDFViewer.tsx"
     </div>
   </section>
 
+  {/* Publications Section */}
+  <section id="publications" class="py-20 px-4 bg-raised/20 border-t border-b border-gold/10">
+    <div class="max-w-5xl mx-auto space-y-12">
+      <div class="text-center space-y-2">
+        <h2 class="text-3xl font-display font-bold tracking-wider text-champagne">
+          Publications & Guides
+          <span class="block text-sm text-gold font-sans mt-1">สิ่งพิมพ์และคู่มือปฏิบัติการระบบ</span>
+        </h2>
+        <p class="text-xs text-text-muted max-w-md mx-auto">
+          Operational booklets and system audits detailing OP Stack rollup recoveries and node synchronization.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <!-- Book 1 -->
+        <div class="bg-raised/40 hover:bg-raised border border-gold/10 hover:border-gold/45 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgb(0_0_0/0.4)] rounded-xs p-6 flex flex-col justify-between transition-all duration-300 space-y-4">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[10px] font-mono text-patina font-bold">REPORT / AUDIT</span>
+              <span class="text-[10px] font-mono text-text-faint">2026-06-19</span>
+            </div>
+            <h4 class="text-lg font-sans font-semibold text-champagne leading-snug">พอร์ตชน คนไม่เจอ — ชำแหละแผนกู้ชีพ L2 OP Stack Follower</h4>
+            <p class="text-sm text-text-warm leading-relaxed">
+              คู่มือวิเคราะห์และไขปมปัญหาการหยุดซิงก์ของโหนด L2 OP Stack การประมวลผลและการแก้บั๊กแบบลงลึกถึงชั้นโครงสร้างสเปก
+            </p>
+          </div>
+          <a href="/books/preview?file=/books/2026-06-19_opstack-l2-audit.pdf" class="inline-flex items-center justify-center bg-gold text-[oklch(7%_0.006_95)] hover:bg-gold-rich hover:scale-[1.02] active:scale-[0.98] text-xs font-mono font-bold py-2 px-3 rounded-xs transition-all text-center cursor-pointer">
+            Read Online / อ่านออนไลน์ &rarr;
+          </a>
+        </div>
+        <!-- Book 2 -->
+        <div class="bg-raised/40 hover:bg-raised border border-gold/10 hover:border-gold/45 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgb(0_0_0/0.4)] rounded-xs p-6 flex flex-col justify-between transition-all duration-300 space-y-4">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[10px] font-mono text-patina font-bold">GUIDE / P2P</span>
+              <span class="text-[10px] font-mono text-text-faint">2026-06-20</span>
+            </div>
+            <h4 class="text-lg font-sans font-semibold text-champagne leading-snug">OP-Stack Nova Chain Derivation Guide</h4>
+            <p class="text-sm text-text-warm leading-relaxed">
+              บทพิสูจน์การประสานสองช่องทางขนาน ทั้ง L1 Derivation และ L2 P2P Gossip เพื่อดึงข้อมูลสถานะบล็อกเชนกลับสู่ความถูกต้อง
+            </p>
+          </div>
+          <a href="/books/preview?file=/books/2026-06-20_op-stack-nova-chain-guide.pdf" class="inline-flex items-center justify-center bg-gold text-[oklch(7%_0.006_95)] hover:bg-gold-rich hover:scale-[1.02] active:scale-[0.98] text-xs font-mono font-bold py-2 px-3 rounded-xs transition-all text-center cursor-pointer">
+            Read Online / อ่านออนไลน์ &rarr;
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   {/* Blog Section */}
   <section id="blog" class="py-20 px-4 max-w-5xl mx-auto space-y-12">
     <div class="flex items-baseline justify-between border-b border-gold/15 pb-4">
