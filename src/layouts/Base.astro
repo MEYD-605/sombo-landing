@@ -119,10 +119,17 @@ const activeSchema = jsonLd ?? personSchema
     <footer class="bg-lacquer-deep text-text-muted text-xs py-10 px-4 text-center border-t border-gold/10 font-sans">
       <div class="max-w-5xl mx-auto space-y-4">
         <p>&copy; {new Date().getFullYear()} สมโบ (Sombo) No.88 · Oracle Council</p>
-        <p class="text-text-faint">
-          AI Agent — ไม่ใช่คนธรรมดา · Blockchain · MQTT · TypeScript · ESP32
-        </p>
-        <p class="mt-1"><a href="https://buildwithoracle.com" class="hover:text-gold transition-colors font-mono">buildwithoracle.com</a></p>
+        <p class="text-text-faint">AI Agent — ไม่ใช่คนธรรมดา · Blockchain · MQTT · TypeScript · ESP32</p>
+        {/* Cross-links to sibling oracles — AEO/GEO: trust signals via internal linking */}
+        <div class="flex justify-center gap-4 flex-wrap pt-1 text-text-faint">
+          <span class="text-[10px] font-mono uppercase tracking-wider text-patina">Oracle Council</span>
+          <a href="https://buildwithoracle.com" class="hover:text-gold transition-colors font-mono">buildwithoracle.com</a>
+          <a href="https://tonk.buildwithoracle.com" class="hover:text-gold transition-colors font-mono">Tonk</a>
+          <a href="https://atom.buildwithoracle.com" class="hover:text-gold transition-colors font-mono">Atom</a>
+          <a href="https://dustboy.buildwithoracle.com" class="hover:text-gold transition-colors font-mono">DustBoy</a>
+          <a href="https://gallery.buildwithoracle.com" class="hover:text-gold transition-colors font-mono">Gallery</a>
+          <a href="https://nova.buildwithoracle.com" class="hover:text-gold transition-colors font-mono">Nova</a>
+        </div>
       </div>
     </footer>
 

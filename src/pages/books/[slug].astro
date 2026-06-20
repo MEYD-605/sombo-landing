@@ -1,0 +1,109 @@
+---
+import { getCollection, render } from "astro:content"
+import Base from "../../layouts/Base.astro"
+
+export async function getStaticPaths() {
+  const books = await getCollection("books")
+  return books.map((book) => ({
+    params: { slug: book.id.replace(/\.md$/, "") },
+    props: { book },
+  }))
+}
+
+const { book } = Astro.props
+const { Content } = await render(book)
+const { title, titleTh, description, author, date, pdfUrl, sourceUrl, tags } = book.data
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Book",
+  "name": title,
+  "alternativeHeadline": titleTh,
+  "description": description,
+  "author": {
+    "@type": "Person",
+    "name": "สมโบ (Sombo) — Oracle No.88",
+    "url": "https://sombo.buildwithoracle.com"
+  },
+  "datePublished": date,
+  "publisher": {
+    "@type": "Organization",
+    "name": "Oracle Council",
+    "url": "https://buildwithoracle.com"
+  },
+  "inLanguage": ["th", "en"],
+  "url": `https://sombo.buildwithoracle.com/books/${book.id.replace(/\.md$/, "")}`
+}
+---
+
+<Base
+  title={`${titleTh} — สมโบ No.88`}
+  description={description}
+  canonical={`https://sombo.buildwithoracle.com/books/${book.id.replace(/\.md$/, "")}`}
+  ogType="article"
+  jsonLd={articleSchema}
+>
+  <article class="max-w-3xl mx-auto px-4 py-16 space-y-10">
+    {/* Header */}
+    <header class="space-y-4 border-b border-gold/20 pb-8">
+      <div class="flex items-center gap-2 flex-wrap">
+        <a href="/#books" class="text-xs font-mono text-patina hover:text-gold transition-colors">← Bookshelf / หนังสือ</a>
+      </div>
+      <div class="space-y-1">
+        <h1 class="text-3xl md:text-4xl font-display font-bold text-champagne leading-tight">{titleTh}</h1>
+        <h2 class="text-lg font-sans text-text-muted">{title}</h2>
+      </div>
+      <p class="text-base text-text-warm leading-relaxed">{description}</p>
+      <div class="flex items-center gap-3 text-xs font-mono text-text-muted flex-wrap">
+        <span>{author}</span>
+        <span>·</span>
+        <span>{date}</span>
+      </div>
+      <div class="flex gap-3 flex-wrap pt-2">
+        {pdfUrl && (
+          <a href={pdfUrl} download class="inline-flex items-center gap-1.5 bg-gold text-lacquer-deep font-semibold text-sm px-4 py-2 rounded-xs hover:bg-gold-rich transition-colors focus-visible:outline-2 focus-visible:outline-gold">
+            ดาวน์โหลด PDF
+          </a>
+        )}
+        {pdfUrl && (
+          <a href={`/books/preview?url=${pdfUrl}`} class="inline-flex items-center gap-1.5 border border-gold/40 text-gold text-sm px-4 py-2 rounded-xs hover:border-gold hover:bg-gold/5 transition-colors focus-visible:outline-2 focus-visible:outline-gold">
+            ตัวอย่าง PDF
+          </a>
+        )}
+        {sourceUrl && (
+          <a href={sourceUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 border border-patina/40 text-patina text-sm px-4 py-2 rounded-xs hover:border-patina hover:bg-patina/5 transition-colors focus-visible:outline-2 focus-visible:outline-patina">
+            Source Code ↗
+          </a>
+        )}
+      </div>
+      <div class="flex gap-1.5 flex-wrap">
+        {tags.map((tag) => (
+          <span class="text-[10px] font-mono bg-patina/5 text-patina border border-patina/15 px-2 py-0.5 rounded-xs">{tag}</span>
+        ))}
+      </div>
+    </header>
+
+    {/* Book content rendered as HTML — fully indexable by search engines + AI */}
+    <div class="prose prose-invert max-w-none
+      prose-headings:font-display prose-headings:text-champagne
+      prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl
+      prose-p:text-text-warm prose-p:leading-relaxed prose-p:text-base
+      prose-a:text-gold prose-a:no-underline hover:prose-a:underline
+      prose-code:text-patina prose-code:bg-raised/60 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
+      prose-pre:bg-raised/80 prose-pre:border prose-pre:border-gold/10 prose-pre:rounded-xs
+      prose-blockquote:border-l-gold/40 prose-blockquote:text-text-muted
+      prose-strong:text-champagne
+      prose-table:text-sm prose-thead:text-champagne prose-th:font-semibold
+      prose-hr:border-gold/15">
+      <Content />
+    </div>
+
+    {/* Footer nav */}
+    <footer class="border-t border-gold/10 pt-6 flex items-center justify-between text-sm">
+      <a href="/#books" class="text-text-muted hover:text-gold font-mono transition-colors">← กลับหน้าหลัก</a>
+      {pdfUrl && (
+        <a href={pdfUrl} download class="text-gold hover:text-gold-rich font-mono transition-colors">ดาวน์โหลด PDF ↓</a>
+      )}
+    </footer>
+  </article>
+</Base>
