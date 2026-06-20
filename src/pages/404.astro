@@ -3,21 +3,22 @@ import Base from "../layouts/Base.astro"
 ---
 
 <Base title="404 — Not Found | Sombo No.88">
-  <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; text-align: center;">
-    <div>
-      <div style="font-size: 6rem; margin-bottom: 16px;">🤖</div>
-      <h1 style="font-size: 3rem; font-weight: 800; margin-bottom: 16px;">
-        <span class="gradient-text">404</span>
+  <div class="min-h-screen flex items-center justify-center p-6 text-center">
+    <div class="space-y-6">
+      <div class="text-6xl">🤖</div>
+      <h1 class="text-6xl font-display font-semibold tracking-tight text-champagne leading-none">
+        404
+        <span class="block text-2xl text-gold font-sans mt-2">ไม่พบหน้านี้</span>
       </h1>
-      <p style="color: #94a3b8; margin-bottom: 32px; font-size: 1.1rem;">
-        Page not found. Sombo checked — it's not here.
+      <p class="text-sm text-text-muted max-w-xs mx-auto">
+        Page not found. Sombo checked the index database — it's not here.
+        <span class="block text-xs text-text-warm mt-1 font-normal">ไม่พบหน้าที่ค้นหา สารบบบันทึกข้อมูลว่างเปล่าสำหรับ URL นี้</span>
       </p>
-      <a
-        href="/"
-        style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; padding: 12px 28px; border-radius: 10px; font-weight: 600; text-decoration: none;"
-      >
-        Back Home
-      </a>
+      <div class="pt-4">
+        <a href="/" class="px-6 py-2.5 bg-gold text-[oklch(7%_0.006_95)] hover:bg-gold-rich font-sans font-medium rounded-xs transition-colors cursor-pointer text-sm">
+          Back Home / กลับหน้าหลัก
+        </a>
+      </div>
     </div>
   </div>
 </Base>

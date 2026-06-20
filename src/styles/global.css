@@ -1,59 +1,78 @@
 @import "tailwindcss";
 
-:root {
-  --primary: #8b5cf6;
-  --secondary: #06b6d4;
-  --accent: #f472b6;
-  --bg: #0f0f1a;
-  --surface: #1a1a2e;
-  --text: #e2e8f0;
-  --muted: #94a3b8;
+@theme {
+  --color-gold: oklch(84% 0.19 80.46);
+  --color-gold-rich: oklch(77% 0.13 82);
+  --color-patina: oklch(70% 0.12 188);
+  --color-lacquer: oklch(7% 0.006 95);
+  --color-lacquer-deep: oklch(4% 0.004 95);
+  --color-raised: oklch(11% 0.006 95);
+  --color-graphite: oklch(15% 0.008 95);
+  
+  --color-lavender: oklch(78% 0.08 300);
+  --color-royal: oklch(45% 0.16 300);
+  
+  --color-champagne: oklch(91% 0 0);
+  --color-text-warm: oklch(88% 0 0);
+  --color-text-muted: oklch(72% 0 0);
+  --color-text-faint: oklch(62% 0 0);
+  
+  --font-display: "Alumni Sans Pinstripe", system-ui, sans-serif;
+  --font-body: "Albert Sans", system-ui, sans-serif;
+  --font-mono: "SFMono-Regular", "Roboto Mono", monospace;
 }
 
-html {
-  scroll-behavior: smooth;
-  background-color: var(--bg);
-  color: var(--text);
+@layer base {
+  body {
+    background-color: var(--color-lacquer);
+    color: var(--color-text-warm);
+    font-family: var(--font-body);
+    margin: 0;
+    padding: 0;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--color-champagne);
+    font-family: var(--font-display);
+  }
 }
 
-body {
-  font-family: "Inter", system-ui, sans-serif;
-  background: var(--bg);
-  min-height: 100vh;
+/* Light Mode (Cream & Lacquer) */
+html[data-theme="light"] {
+  --color-lacquer: oklch(96% 0.005 85);
+  --color-lacquer-deep: oklch(92% 0.008 85);
+  --color-raised: oklch(98% 0.003 85);
+  --color-graphite: oklch(88% 0.005 85);
+  
+  --color-champagne: oklch(20% 0.006 95);
+  --color-text-warm: oklch(25% 0.006 95);
+  --color-text-muted: oklch(45% 0.006 95);
+  --color-text-faint: oklch(58% 0.006 95);
+  
+  --color-gold: oklch(52% 0.15 80);
+  --color-gold-rich: oklch(45% 0.13 80);
+  --color-patina: oklch(42% 0.11 188);
+  
+  --color-lavender: oklch(45% 0.10 300);
+  --color-royal: oklch(35% 0.12 300);
 }
 
-.gradient-text {
-  background: linear-gradient(135deg, #8b5cf6, #06b6d4, #f472b6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.card-glass {
-  background: rgba(26, 26, 46, 0.7);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(139, 92, 246, 0.2);
-  border-radius: 12px;
-}
-
-.prose a {
-  color: var(--secondary);
-  text-decoration: underline;
-}
-
-.prose h1, .prose h2, .prose h3 {
-  color: #e2e8f0;
-}
-
-.prose code {
-  background: rgba(139, 92, 246, 0.15);
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 0.875em;
-  color: #c4b5fd;
-}
-
-.prose pre {
-  background: #1e1e2e !important;
-  border: 1px solid rgba(139, 92, 246, 0.2);
+/* White Mode (High Contrast Pure White & Black) */
+html[data-theme="white"] {
+  --color-lacquer: oklch(100% 0 0);
+  --color-lacquer-deep: oklch(97% 0 0);
+  --color-raised: oklch(100% 0 0);
+  --color-graphite: oklch(95% 0 0);
+  
+  --color-champagne: oklch(0% 0 0);
+  --color-text-warm: oklch(5% 0 0);
+  --color-text-muted: oklch(35% 0 0);
+  --color-text-faint: oklch(50% 0 0);
+  
+  --color-gold: oklch(42% 0.13 80);
+  --color-gold-rich: oklch(35% 0.11 80);
+  --color-patina: oklch(35% 0.09 188);
+  
+  --color-lavender: oklch(35% 0.10 300);
+  --color-royal: oklch(25% 0.12 300);
 }

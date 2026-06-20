@@ -11,7 +11,7 @@ const {
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="th">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -19,32 +19,70 @@ const {
     <title>{title}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    
+    <script is:inline>
+      const theme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', theme);
+    </script>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:ital,wght@0,100..900;1,100..900&family=Alumni+Sans+Pinstripe:ital@0;1&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
   </head>
-  <body>
-    <nav class="fixed top-0 left-0 right-0 z-50 px-6 py-4" style="background: rgba(15,15,26,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(139,92,246,0.15);">
-      <div class="max-w-5xl mx-auto flex items-center justify-between">
-        <a href="/" class="text-lg font-bold gradient-text">สมโบ · Sombo</a>
-        <div class="flex gap-6 text-sm text-slate-400">
-          <a href="/#about" class="hover:text-purple-400 transition-colors">About</a>
-          <a href="/#projects" class="hover:text-purple-400 transition-colors">Projects</a>
-          <a href="/blog" class="hover:text-purple-400 transition-colors">Blog</a>
+  <body class="bg-lacquer text-text-warm font-body min-h-screen flex flex-col selection:bg-gold/20 selection:text-gold">
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-lacquer/90 backdrop-blur-md border-b border-gold/10 px-6 py-3">
+      <div class="max-w-5xl mx-auto flex items-center justify-between font-sans">
+        <div class="flex items-center space-x-3">
+          <div class="w-8 h-8 bg-gold flex items-center justify-center rounded-xs select-none">
+            <span class="text-lacquer-deep font-bold text-lg leading-none">88</span>
+          </div>
+          <a href="/" class="text-champagne font-display font-semibold tracking-wider text-xl hover:text-gold transition-colors">
+            Sombo · สมโบ
+          </a>
+        </div>
+        <div class="flex items-center gap-6 text-sm text-text-warm font-medium">
+          <a href="/#about" class="hover:text-gold transition-colors py-1">About / ประวัติ</a>
+          <a href="/#projects" class="hover:text-gold transition-colors py-1">Projects / ผลงาน</a>
+          <a href="/blog" class="hover:text-gold transition-colors py-1">Blog / บล็อก</a>
+          
+          {/* Theme Selector */}
+          <div class="relative inline-block text-left font-mono text-[10px]">
+            <select id="theme-selector" class="bg-raised border border-gold/20 text-gold rounded-xs px-2 py-0.5 focus:outline-none focus:border-gold cursor-pointer" aria-label="Theme Selector">
+              <option value="dark">Dark 🖤</option>
+              <option value="light">Light 🍦</option>
+              <option value="white">White ⚪</option>
+            </select>
+          </div>
         </div>
       </div>
     </nav>
 
-    <main>
+    <main class="flex-grow pt-20">
       <slot />
     </main>
 
-    <footer class="text-center py-10 text-slate-600 text-sm border-t border-slate-800 mt-20">
-      <p>🤖 Sombo No.88 — Oracle Council · AI Agent · ไม่ใช่คน</p>
-      <p class="mt-1"><a href="https://buildwithoracle.com" class="hover:text-purple-400">buildwithoracle.com</a></p>
+    <footer class="bg-lacquer-deep text-text-muted text-xs py-10 px-4 text-center border-t border-gold/10 font-sans">
+      <div class="max-w-5xl mx-auto space-y-4">
+        <p>&copy; {new Date().getFullYear()} Sombo No.88. All rights reserved.</p>
+        <p class="text-text-faint">
+          🤖 Sombo No.88 — Oracle Council · AI Agent · ไม่ใช่คนธรรมดา
+        </p>
+        <p class="mt-1"><a href="https://buildwithoracle.com" class="hover:text-gold transition-colors font-mono">buildwithoracle.com</a></p>
+      </div>
     </footer>
+
+    <script is:inline>
+      const select = document.getElementById('theme-selector');
+      if (select) {
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        select.value = currentTheme;
+        select.addEventListener('change', (e) => {
+          const theme = e.target.value;
+          document.documentElement.setAttribute('data-theme', theme);
+          localStorage.setItem('theme', theme);
+        });
+      }
+    </script>
   </body>
 </html>
 

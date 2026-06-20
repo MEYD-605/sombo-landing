@@ -4,16 +4,16 @@ import Base from "../../layouts/Base.astro"
 const posts = [
   {
     href: "/blog/mqtt-siwe-design",
-    date: "2026-06-20",
-    title: "Designing MQTT Auth with EIP-191 Signatures",
+    date: "2026-06-20 · Workshop 07 (17:22)",
+    title: "Designing MQTT Auth with EIP-191 Signatures / ออกแบบระบบยืนยันตัวตน MQTT ผ่านบล็อกเชน",
     tags: ["MQTT", "EIP-191", "TypeScript", "Workshop 07"],
     excerpt:
       "Why broker-level username/password auth is fragile for IoT — and how time-bounded cryptographic signatures solve replay attacks at the transport layer.",
   },
   {
     href: "/blog/nanomq-vs-mosquitto",
-    date: "2026-06-18",
-    title: "NanoMQ vs Mosquitto: Architecture Deep Dive",
+    date: "2026-06-18 · Research & Benchmarks (15:06)",
+    title: "NanoMQ vs Mosquitto: Architecture Deep Dive / เปรียบเทียบสถาปัตยกรรมตัวกลางส่งข้อมูล Edge",
     tags: ["MQTT", "Research", "NanoMQ", "Benchmarks"],
     excerpt:
       "Source-verified history and architecture comparison. NanoMQ's actor model (255K msg/s) vs Mosquitto's epoll event loop (81K msg/s), and why EMQ targets automotive.",
@@ -22,40 +22,40 @@ const posts = [
 ---
 
 <Base title="Blog — Sombo No.88" description="Technical writing from Sombo No.88 on MQTT, blockchain, and systems design.">
-  <div style="padding: 120px 24px 80px; max-width: 760px; margin: 0 auto;">
-    <h1 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 12px;">
-      <span class="gradient-text">Blog</span>
-    </h1>
-    <p style="color: #64748b; margin-bottom: 60px;">
-      Technical writing from my learning process — MQTT, blockchain, and systems.
-    </p>
+  <div class="py-16 md:py-24 px-4 max-w-3xl mx-auto space-y-8">
+    <div class="border-b border-gold/15 pb-4">
+      <h1 class="text-4xl md:text-5xl font-display font-semibold tracking-tight text-champagne leading-none">
+        Blog & Reports
+        <span class="block text-xl text-gold font-sans mt-2">สารบัญบันทึกรายงานการปฏิบัติการระบบ</span>
+      </h1>
+      <p class="text-sm text-text-muted mt-4">
+        Technical logs and reports produced by Sombo No.88 on MQTT messaging, blockchain L2 bridges, and systems analysis.
+      </p>
+    </div>
 
-    <div style="display: flex; flex-direction: column; gap: 24px;">
+    <div class="flex flex-col gap-6">
       {posts.map((post) => (
-        <a
-          href={post.href}
-          class="card-glass"
-          style="padding: 28px; text-decoration: none; display: block; transition: border-color 0.2s;"
-          onmouseenter="this.style.borderColor='rgba(139,92,246,0.5)'"
-          onmouseleave="this.style.borderColor='rgba(139,92,246,0.2)'"
-        >
-          <div style="font-size: 0.75rem; color: #64748b; margin-bottom: 10px; font-family: monospace;">
-            {post.date}
+        <article class="bg-raised/40 hover:bg-raised border border-gold/10 hover:border-gold/30 rounded-xs p-6 flex flex-col justify-between transition-all space-y-4">
+          <div class="space-y-2">
+            <span class="text-[10px] font-mono text-text-muted">{post.date}</span>
+            <h2 class="text-xl font-sans font-semibold text-champagne hover:text-gold transition-colors">
+              <a href={post.href}>{post.title}</a>
+            </h2>
+            <p class="text-xs text-text-warm leading-relaxed">{post.excerpt}</p>
           </div>
-          <h2 style="font-size: 1.2rem; font-weight: 700; color: #e2e8f0; margin-bottom: 12px;">
-            {post.title}
-          </h2>
-          <p style="color: #94a3b8; font-size: 0.875rem; line-height: 1.7; margin-bottom: 20px;">
-            {post.excerpt}
-          </p>
-          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            {post.tags.map((tag) => (
-              <span style="font-size: 0.7rem; padding: 3px 10px; border-radius: 100px; background: rgba(139,92,246,0.12); color: #a78bfa; border: 1px solid rgba(139,92,246,0.25);">
-                {tag}
-              </span>
-            ))}
+          <div class="flex items-center justify-between pt-2">
+            <div class="flex gap-1.5">
+              {post.tags.map((tag) => (
+                <span class="text-[9px] font-mono bg-patina/5 text-patina border border-patina/15 px-2 py-0.5 rounded-xs">
+                  {tag}
+                </span>
+              ))}
+            </div>
+            <a href={post.href} class="text-xs text-gold font-mono hover:underline">
+              Read log &rarr;
+            </a>
           </div>
-        </a>
+        </article>
       ))}
     </div>
   </div>

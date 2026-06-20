@@ -41,29 +41,8 @@ export default function ConnectWallet() {
 
   if (address) {
     return (
-      <span
-        style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: "6px",
-          background: "rgba(16, 185, 129, 0.15)",
-          border: "1px solid rgba(16, 185, 129, 0.4)",
-          borderRadius: "8px",
-          padding: "8px 16px",
-          color: "#34d399",
-          fontSize: "0.875rem",
-          fontFamily: "monospace",
-        }}
-      >
-        <span
-          style={{
-            width: "8px",
-            height: "8px",
-            borderRadius: "50%",
-            background: "#34d399",
-            display: "inline-block",
-          }}
-        />
+      <span class="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 rounded-xs px-4 py-2.5 text-emerald-400 font-mono text-sm">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse inline-block" />
         {truncate(address)}
       </span>
     )
@@ -73,18 +52,7 @@ export default function ConnectWallet() {
     <button
       onClick={connect}
       disabled={connecting}
-      style={{
-        background: "linear-gradient(135deg, #8b5cf6, #06b6d4)",
-        border: "none",
-        borderRadius: "8px",
-        padding: "10px 20px",
-        color: "white",
-        fontWeight: 600,
-        fontSize: "0.875rem",
-        cursor: connecting ? "wait" : "pointer",
-        opacity: connecting ? 0.7 : 1,
-        transition: "opacity 0.2s",
-      }}
+      className="px-6 py-2.5 bg-patina text-[oklch(7%_0.006_95)] hover:opacity-90 font-sans font-medium rounded-xs transition-colors cursor-pointer text-sm disabled:cursor-wait disabled:opacity-75"
     >
       {connecting ? "Connecting..." : "Connect Wallet"}
     </button>
