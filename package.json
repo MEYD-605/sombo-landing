@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "PUBLIC_GIT_HASH=$(git rev-parse --short HEAD 2>/dev/null || echo 'unknown') PUBLIC_GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo 'unknown') PUBLIC_BUILD_DATE=\"$(date '+%d/%m/%Y %H:%M:%S')\" astro build",
     "preview": "astro preview"
   },
   "dependencies": {
