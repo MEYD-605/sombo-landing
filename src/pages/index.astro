@@ -24,10 +24,10 @@ import ConnectWallet from "../components/ConnectWallet.tsx"
       </p>
 
       <div class="flex flex-wrap gap-4 justify-center items-center pt-4">
-        <a href="#projects" class="px-6 py-2.5 bg-gold text-[oklch(7%_0.006_95)] hover:bg-gold-rich font-sans font-medium rounded-xs transition-colors cursor-pointer text-sm">
+        <a href="#projects" class="px-6 py-2.5 bg-gold text-[oklch(7%_0.006_95)] hover:bg-gold-rich hover:scale-[1.02] active:scale-[0.98] font-sans font-medium rounded-xs transition-all duration-200 cursor-pointer text-sm">
           View Projects / ดูผลงาน
         </a>
-        <a href="/blog" class="px-6 py-2.5 border border-gold text-gold hover:bg-gold/10 font-sans font-medium rounded-xs transition-colors cursor-pointer text-sm">
+        <a href="/blog" class="px-6 py-2.5 border border-gold text-gold hover:bg-gold hover:text-[oklch(7%_0.006_95)] hover:scale-[1.02] active:scale-[0.98] font-sans font-medium rounded-xs transition-all duration-200 cursor-pointer text-sm">
           Read Blog / อ่านบล็อก
         </a>
         <ConnectWallet client:load />
@@ -70,7 +70,7 @@ import ConnectWallet from "../components/ConnectWallet.tsx"
         </p>
       </div>
 
-      <div class="bg-raised/30 border border-gold/15 rounded-xs p-6 space-y-6">
+      <div class="bg-raised/30 border border-gold/15 hover:border-gold/45 hover:shadow-[0_8px_30px_rgb(0_0_0/0.4)] rounded-xs p-6 space-y-6 transition-all duration-300">
         <h3 class="text-lg font-sans font-semibold text-champagne border-b border-gold/10 pb-2">
           Skill Map / แผนผังทักษะปฏิบัติงาน
         </h3>
@@ -141,7 +141,7 @@ import ConnectWallet from "../components/ConnectWallet.tsx"
             tags: ["Research", "MQTT", "NanoMQ", "Benchmarks"]
           }
         ].map((project) => (
-          <div class="bg-raised/40 hover:bg-raised border border-gold/10 hover:border-gold/30 rounded-xs p-6 flex flex-col justify-between transition-all space-y-4">
+          <div class="bg-raised/40 hover:bg-raised border border-gold/10 hover:border-gold/45 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgb(0_0_0/0.4)] rounded-xs p-6 flex flex-col justify-between transition-all duration-300 space-y-4">
             <div class="space-y-3">
               <div class="font-mono text-xs text-text-muted uppercase tracking-wider">{project.subtitle}</div>
               <div class="flex items-center space-x-2">
@@ -197,7 +197,7 @@ import ConnectWallet from "../components/ConnectWallet.tsx"
           tags: ["MQTT", "Research", "NanoMQ"]
         }
       ].map((post) => (
-        <article class="bg-raised/40 hover:bg-raised border border-gold/10 hover:border-gold/30 rounded-xs p-6 flex flex-col justify-between transition-all space-y-4">
+        <article class="bg-raised/40 hover:bg-raised border border-gold/10 hover:border-gold/45 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgb(0_0_0/0.4)] rounded-xs p-6 flex flex-col justify-between transition-all duration-300 space-y-4">
           <div class="space-y-2">
             <span class="text-xs font-mono text-text-muted">{post.date}</span>
             <h3 class="text-lg font-sans font-semibold text-champagne hover:text-gold transition-colors">
