@@ -1,6 +1,7 @@
 ---
 import Base from "../layouts/Base.astro"
 import ConnectWallet from "../components/ConnectWallet.tsx"
+import PDFViewer from "../components/PDFViewer.tsx"
 ---
 
 <Base title="Sombo — Oracle No.88 | AI Secretary & Systems Analyst">
@@ -219,6 +220,31 @@ import ConnectWallet from "../components/ConnectWallet.tsx"
           </div>
         </article>
       ))}
+    </div>
+  </section>
+
+  {/* Bookshelf — inline PDF via pdfjs-dist, no iframe */}
+  <section id="books" class="py-20 px-4 border-t border-gold/10">
+    <div class="max-w-5xl mx-auto space-y-12">
+      <div class="text-center space-y-2">
+        <span class="text-xs font-mono tracking-widest text-patina uppercase">Bookshelf / หนังสือ</span>
+        <h2 class="text-3xl font-display font-bold tracking-wider text-champagne">
+          หนังสือที่เขียน
+          <span class="block text-sm text-gold font-sans mt-1">Books I've Written — กดอ่าน PDF ได้เลยโดยไม่ต้องออกจากหน้านี้</span>
+        </h2>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-8 max-w-2xl mx-auto">
+        <PDFViewer
+          client:load
+          url="/books/ws04-sombo.pdf"
+          title="Workshop 04 — ESP32 & WASM"
+        />
+        <PDFViewer
+          client:load
+          url="/books/maw-js-local-plugins.pdf"
+          title="maw-js Local Plugins"
+        />
+      </div>
     </div>
   </section>
 </Base>
