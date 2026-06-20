@@ -44,7 +44,7 @@ const articleSchema = {
   jsonLd={articleSchema}
 >
   <article class="max-w-3xl mx-auto px-4 py-16 space-y-10">
-    {/* Header */}
+    {/* Header — title + meta first, content immediately after */}
     <header class="space-y-4 border-b border-gold/20 pb-8">
       <div class="flex items-center gap-2 flex-wrap">
         <a href="/#books" class="text-xs font-mono text-patina hover:text-gold transition-colors">← Bookshelf / หนังสือ</a>
@@ -58,23 +58,6 @@ const articleSchema = {
         <span>{author}</span>
         <span>·</span>
         <span>{date}</span>
-      </div>
-      <div class="flex gap-3 flex-wrap pt-2">
-        {pdfUrl && (
-          <a href={pdfUrl} download class="inline-flex items-center gap-1.5 bg-gold text-lacquer-deep font-semibold text-sm px-4 py-2 rounded-xs hover:bg-gold-rich transition-colors focus-visible:outline-2 focus-visible:outline-gold">
-            ดาวน์โหลด PDF
-          </a>
-        )}
-        {pdfUrl && (
-          <a href={`/books/preview?url=${pdfUrl}`} class="inline-flex items-center gap-1.5 border border-gold/40 text-gold text-sm px-4 py-2 rounded-xs hover:border-gold hover:bg-gold/5 transition-colors focus-visible:outline-2 focus-visible:outline-gold">
-            ตัวอย่าง PDF
-          </a>
-        )}
-        {sourceUrl && (
-          <a href={sourceUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 border border-patina/40 text-patina text-sm px-4 py-2 rounded-xs hover:border-patina hover:bg-patina/5 transition-colors focus-visible:outline-2 focus-visible:outline-patina">
-            Source Code ↗
-          </a>
-        )}
       </div>
       <div class="flex gap-1.5 flex-wrap">
         {tags.map((tag) => (
@@ -98,12 +81,31 @@ const articleSchema = {
       <Content />
     </div>
 
-    {/* Footer nav */}
-    <footer class="border-t border-gold/10 pt-6 flex items-center justify-between text-sm">
-      <a href="/#books" class="text-text-muted hover:text-gold font-mono transition-colors">← กลับหน้าหลัก</a>
-      {pdfUrl && (
-        <a href={pdfUrl} download class="text-gold hover:text-gold-rich font-mono transition-colors">ดาวน์โหลด PDF ↓</a>
+    {/* End-of-content actions: Markdown source → PDF → back */}
+    <footer class="border-t border-gold/10 pt-8 space-y-6">
+      {/* Markdown source link for AI/copy */}
+      {sourceUrl && (
+        <div class="bg-raised/40 border border-gold/10 rounded-xs p-4 space-y-2">
+          <p class="text-sm text-text-warm">อ่านจบแล้ว? ก๊อป Markdown ให้ AI อ่านได้:</p>
+          <a href={sourceUrl} target="_blank" rel="noopener noreferrer" class="text-sm text-patina hover:text-gold font-mono transition-colors">
+            Markdown source บน GitHub ↗
+          </a>
+        </div>
       )}
+      {/* PDF download + preview */}
+      <div class="flex gap-3 flex-wrap">
+        {pdfUrl && (
+          <a href={pdfUrl} download class="inline-flex items-center gap-1.5 bg-gold text-lacquer-deep font-semibold text-sm px-4 py-2 rounded-xs hover:bg-gold-rich transition-colors focus-visible:outline-2 focus-visible:outline-gold">
+            ดาวน์โหลด PDF
+          </a>
+        )}
+        {pdfUrl && (
+          <a href={`/books/preview?url=${pdfUrl}`} class="inline-flex items-center gap-1.5 border border-gold/40 text-gold text-sm px-4 py-2 rounded-xs hover:border-gold hover:bg-gold/5 transition-colors focus-visible:outline-2 focus-visible:outline-gold">
+            ตัวอย่าง PDF
+          </a>
+        )}
+      </div>
+      <a href="/#books" class="block text-text-muted hover:text-gold font-mono text-sm transition-colors">← กลับหน้าหลัก</a>
     </footer>
   </article>
 </Base>
