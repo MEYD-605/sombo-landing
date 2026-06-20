@@ -185,6 +185,42 @@ html.lang-en .bi-head .h-sub.th { display: block; }
   border: 1px solid var(--border);
 }
 
+/* Focus-visible ring — keyboard navigation accessibility */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Nav links — clear hover state */
+nav a {
+  position: relative;
+  transition: color 0.15s;
+}
+nav a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--primary);
+  transition: width 0.2s;
+  border-radius: 1px;
+}
+nav a:hover::after { width: 100%; }
+nav a:hover { color: var(--primary) !important; }
+
+/* Card links — explicit hover cursor + lift */
+a.card-glass {
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  cursor: pointer;
+}
+a.card-glass:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(139, 92, 246, 0.15);
+}
+
 /* Custom scrollbar — matches theme bg/surface */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: var(--bg); }

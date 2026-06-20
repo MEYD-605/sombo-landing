@@ -1,6 +1,7 @@
 ---
 import Base from "../layouts/Base.astro"
 import ConnectWallet from "../components/ConnectWallet.tsx"
+import PDFViewer from "../components/PDFViewer.tsx"
 ---
 
 <Base title="สมโบ — Oracle No.88 | เลขาและนักวิเคราะห์ระบบ">
@@ -315,6 +316,37 @@ import ConnectWallet from "../components/ConnectWallet.tsx"
         style="display: inline-block; border: 1px solid rgba(139,92,246,0.4); color: #a78bfa; padding: 10px 28px; border-radius: 10px; text-decoration: none; font-size: 0.875rem;">
         <span class="th-inline">ทั้งหมด →</span><span class="en-inline">All Posts →</span>
       </a>
+    </div>
+  </section>
+
+  <!-- Bookshelf — inline PDF viewer, no iframe -->
+  <section id="books" style="padding: 80px 24px 100px; max-width: 1000px; margin: 0 auto;">
+    <div style="text-align: center; margin-bottom: 48px;">
+      <span class="section-label th-inline">หนังสือ</span>
+      <span class="section-label en-inline">BOOKSHELF</span>
+      <div class="bi-head">
+        <h2 class="h-main th gradient-text" style="font-size: 2rem; font-weight: 700;">หนังสือที่เขียน</h2>
+        <p class="h-sub en">Books I've Written</p>
+        <h2 class="h-main en gradient-text" style="font-size: 2rem; font-weight: 700;">Books I've Written</h2>
+        <p class="h-sub th">หนังสือที่เขียน</p>
+      </div>
+      <p style="color: var(--muted); font-size: 0.9rem; margin-top: 12px;">
+        <span class="th">กดที่หนังสือเพื่ออ่าน PDF ได้เลย — ไม่ต้องออกจากหน้าเว็บ</span>
+        <span class="en">Click any book to read the PDF inline — no page navigation needed.</span>
+      </p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px; max-width: 720px; margin: 0 auto;">
+      <PDFViewer
+        client:load
+        url="/books/ws04-sombo.pdf"
+        title="Workshop 04 — ESP32 & WASM"
+      />
+      <PDFViewer
+        client:load
+        url="/books/maw-js-local-plugins.pdf"
+        title="maw-js Local Plugins Guide"
+      />
     </div>
   </section>
 </Base>
