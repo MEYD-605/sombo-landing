@@ -23,17 +23,20 @@
    WCAG AA: text #1e1b4b on bg #fafafa = 17.3:1 ✅
    WCAG AA: muted #4c4f69 on bg #fafafa = 8.2:1  ✅
 ============================================ */
+/* LIGHT MODE — warm cream (inspired by Weizen pattern)
+   WCAG AA: text #1c1917 on bg #f5f0e8 = 16.2:1 ✅
+   WCAG AA: muted #57534e on bg #f5f0e8 = 6.1:1  ✅ */
 html.light {
   --primary: #7c3aed;
   --secondary: #0891b2;
-  --accent: #db2777;
-  --bg: #fafafa;
-  --surface: #f1f0fb;
-  --border: rgba(124, 58, 237, 0.2);
-  --text: #1e1b4b;
-  --muted: #4c4f69;
-  --card-bg: rgba(241, 240, 251, 0.9);
-  --nav-bg: rgba(250, 250, 250, 0.92);
+  --accent: #c2410c;
+  --bg: #f5f0e8;
+  --surface: #ede8df;
+  --border: rgba(124, 58, 237, 0.18);
+  --text: #1c1917;
+  --muted: #57534e;
+  --card-bg: rgba(237, 232, 223, 0.85);
+  --nav-bg: rgba(245, 240, 232, 0.92);
 }
 
 html {
@@ -44,10 +47,20 @@ html {
 }
 
 body {
-  font-family: "Inter", system-ui, sans-serif;
+  font-family: "Noto Sans Thai", "Inter", system-ui, sans-serif;
   background: var(--bg);
   min-height: 100vh;
   color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Thai display heading — fix word-break + letter-spacing */
+.thai-display {
+  font-family: "Noto Sans Thai", system-ui, sans-serif;
+  white-space: nowrap;          /* prevent "สม โบ" word-break */
+  word-break: keep-all;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
 }
 
 .gradient-text {
@@ -55,6 +68,42 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* Button system */
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  padding: 14px 32px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  border: 2px solid var(--primary);
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.15s;
+  display: inline-flex; align-items: center;
+}
+.btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text);
+  padding: 12px 28px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  border: 2px solid color-mix(in srgb, var(--text) 35%, transparent);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, transform 0.15s;
+  display: inline-flex; align-items: center;
+}
+.btn-ghost:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 8%, transparent);
+  transform: translateY(-1px);
 }
 
 .card-glass {
@@ -123,3 +172,15 @@ html.lang-en .bi-head .h-sub.th { display: block; }
   background: color-mix(in srgb, var(--surface) 90%, var(--bg)) !important;
   border: 1px solid var(--border);
 }
+
+/* Custom scrollbar — matches theme bg/surface */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--muted) 45%, var(--surface));
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+/* Firefox */
+* { scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--muted) 45%, var(--surface)) var(--bg); }
