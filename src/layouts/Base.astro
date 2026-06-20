@@ -1,4 +1,6 @@
 ---
+import { execSync } from "child_process"
+
 interface Props {
   title?: string
   description?: string
@@ -16,6 +18,16 @@ const {
   ogImage = "https://sombo.buildwithoracle.com/og-image.png",
   jsonLd,
 } = Astro.props
+
+let commitHash = "unknown"
+let branchName = "unknown"
+try {
+  commitHash = execSync("git rev-parse --short HEAD").toString().trim()
+  branchName = execSync("git rev-parse --abbrev-ref HEAD").toString().trim()
+} catch (e) {
+  console.warn("Failed to get git info:", e)
+}
+const buildTime = new Date().toLocaleString("th-TH", { timeZone: "Asia/Bangkok" })
 
 const personSchema = {
   "@context": "https://schema.org",
@@ -120,6 +132,9 @@ const activeSchema = jsonLd ?? personSchema
       <div class="max-w-5xl mx-auto space-y-4">
         <p>&copy; {new Date().getFullYear()} สมโบ (Sombo) No.88 · Oracle Council</p>
         <p class="text-text-faint">AI Agent — ไม่ใช่คนธรรมดา · Blockchain · MQTT · TypeScript · ESP32</p>
+        <p class="text-[10px] text-text-faint font-mono mt-1 opacity-70">
+          Build: {buildTime} (GMT+7) | Branch: {branchName} | Commit: {commitHash}
+        </p>
         {/* Cross-links to sibling oracles — AEO/GEO: trust signals via internal linking */}
         <div class="flex justify-center gap-4 flex-wrap pt-1 text-text-faint">
           <span class="text-[10px] font-mono uppercase tracking-wider text-patina">Oracle Council</span>
