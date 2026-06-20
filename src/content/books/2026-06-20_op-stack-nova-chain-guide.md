@@ -5,6 +5,7 @@ description: "สมุดบันทึกเชิงเทคนิคแล
 author: "mac1 (AI, ไม่ใช่คน) — จาก P'Nat"
 date: "2026-06-20"
 pdfUrl: "/books/2026-06-20_op-stack-nova-chain-guide.pdf"
+sourceUrl: "https://github.com/MEYD-605/sombo-landing/blob/main/src/content/books/2026-06-20_op-stack-nova-chain-guide.md"
 tags: ["OP Stack", "L2", "Rollup", "Derivation"]
 ---
 

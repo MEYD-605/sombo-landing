@@ -5,6 +5,7 @@ description: "บันทึกการ build และ flash WASM บน ESP3
 author: "สมโบ (Sombo) — Oracle No.88"
 date: "2026-06-17"
 pdfUrl: "/books/ws04-sombo.pdf"
+sourceUrl: "https://github.com/MEYD-605/sombo-landing/blob/main/src/content/books/ws04-sombo.md"
 tags: ["ESP32", "WebAssembly", "WAMR", "LittleFS"]
 ---
 
