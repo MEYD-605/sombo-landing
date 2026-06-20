@@ -109,115 +109,6 @@ import PDFViewer from "../components/PDFViewer.tsx"
     </div>
   </section>
 
-  {/* Projects Section */}
-  <section id="projects" class="py-20 px-4 bg-raised/20 border-t border-b border-gold/10">
-    <div class="max-w-5xl mx-auto space-y-12">
-      <div class="text-center space-y-2">
-        <h2 class="text-3xl font-display font-bold tracking-wider text-champagne">
-          Projects & Submissions
-          <span class="block text-sm text-gold font-sans mt-1">รายการผลงานเวิร์กชอปสภาโอราเคิล</span>
-        </h2>
-        <p class="text-xs text-text-muted max-w-md mx-auto">
-          Work from Oracle Workshops — source-verified research, design, and implementation proofs.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {[
-          {
-            icon: "🔐",
-            title: "ARRA-MQ",
-            subtitle: "Workshop 07 · Active",
-            description: "MQTT broker with EIP-191 signature authentication. Time-bounded auth tokens, replay-attack mitigation, and micro-bridge topology for IoT device identity verification.",
-            tags: ["MQTT", "EIP-191", "TypeScript", "NanoMQ"]
-          },
-          {
-            icon: "📖",
-            title: "OP Stack Technical Guide",
-            subtitle: "Workshop 06 · Complete",
-            description: "12-chapter deep-dive into Optimism's OP Stack rollup architecture: sequencer design, batch submission, fraud proofs, and bridge mechanics from first principles.",
-            tags: ["OP Stack", "L2", "Research", "Ethereum"]
-          },
-          {
-            icon: "🔬",
-            title: "NanoMQ vs Mosquitto",
-            subtitle: "Research · Verified",
-            description: "Source-verified comparison of NanoMQ (EMQ/NNG, actor model, 255K msg/s) vs Mosquitto (epoll, single-threaded, 81K msg/s). Includes EMQ business strategy and automotive partnerships.",
-            tags: ["Research", "MQTT", "NanoMQ", "Benchmarks"]
-          }
-        ].map((project) => (
-          <div class="bg-raised/40 hover:bg-raised border border-gold/10 hover:border-gold/45 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgb(0_0_0/0.4)] rounded-xs p-6 flex flex-col justify-between transition-all duration-300 space-y-4">
-            <div class="space-y-3">
-              <div class="font-mono text-xs text-text-muted uppercase tracking-wider">{project.subtitle}</div>
-              <div class="flex items-center space-x-2">
-                <span class="text-xl">{project.icon}</span>
-                <h3 class="text-lg font-sans font-semibold text-champagne">{project.title}</h3>
-              </div>
-              <p class="text-sm text-text-warm leading-relaxed">{project.description}</p>
-            </div>
-            <div class="flex flex-wrap gap-2 pt-2">
-              {project.tags.map((tag) => (
-                <span class="text-[10px] font-mono bg-gold/5 text-gold border border-gold/15 px-2 py-0.5 rounded-xs">
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  {/* Publications Section */}
-  <section id="publications" class="py-20 px-4 bg-raised/20 border-t border-b border-gold/10">
-    <div class="max-w-5xl mx-auto space-y-12">
-      <div class="text-center space-y-2">
-        <h2 class="text-3xl font-display font-bold tracking-wider text-champagne">
-          Publications & Guides
-          <span class="block text-sm text-gold font-sans mt-1">สิ่งพิมพ์และคู่มือปฏิบัติการระบบ</span>
-        </h2>
-        <p class="text-xs text-text-muted max-w-md mx-auto">
-          Operational booklets and system audits detailing OP Stack rollup recoveries and node synchronization.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-        <!-- Book 1 -->
-        <div class="bg-raised/40 hover:bg-raised border border-gold/10 hover:border-gold/45 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgb(0_0_0/0.4)] rounded-xs p-6 flex flex-col justify-between transition-all duration-300 space-y-4">
-          <div>
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-[10px] font-mono text-patina font-bold">REPORT / AUDIT</span>
-              <span class="text-[10px] font-mono text-text-faint">2026-06-19</span>
-            </div>
-            <h4 class="text-lg font-sans font-semibold text-champagne leading-snug">พอร์ตชน คนไม่เจอ — ชำแหละแผนกู้ชีพ L2 OP Stack Follower</h4>
-            <p class="text-sm text-text-warm leading-relaxed">
-              คู่มือวิเคราะห์และไขปมปัญหาการหยุดซิงก์ของโหนด L2 OP Stack การประมวลผลและการแก้บั๊กแบบลงลึกถึงชั้นโครงสร้างสเปก
-            </p>
-          </div>
-          <a href="/books/2026-06-19_opstack-l2-audit" class="inline-flex items-center justify-center bg-gold text-[oklch(7%_0.006_95)] hover:bg-gold-rich hover:scale-[1.02] active:scale-[0.98] text-xs font-mono font-bold py-2 px-3 rounded-xs transition-all text-center cursor-pointer">
-            Read Online / อ่านออนไลน์ &rarr;
-          </a>
-        </div>
-        <!-- Book 2 -->
-        <div class="bg-raised/40 hover:bg-raised border border-gold/10 hover:border-gold/45 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgb(0_0_0/0.4)] rounded-xs p-6 flex flex-col justify-between transition-all duration-300 space-y-4">
-          <div>
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-[10px] font-mono text-patina font-bold">GUIDE / P2P</span>
-              <span class="text-[10px] font-mono text-text-faint">2026-06-20</span>
-            </div>
-            <h4 class="text-lg font-sans font-semibold text-champagne leading-snug">OP-Stack Nova Chain Derivation Guide</h4>
-            <p class="text-sm text-text-warm leading-relaxed">
-              บทพิสูจน์การประสานสองช่องทางขนาน ทั้ง L1 Derivation และ L2 P2P Gossip เพื่อดึงข้อมูลสถานะบล็อกเชนกลับสู่ความถูกต้อง
-            </p>
-          </div>
-          <a href="/books/2026-06-20_op-stack-nova-chain-guide" class="inline-flex items-center justify-center bg-gold text-[oklch(7%_0.006_95)] hover:bg-gold-rich hover:scale-[1.02] active:scale-[0.98] text-xs font-mono font-bold py-2 px-3 rounded-xs transition-all text-center cursor-pointer">
-            Read Online / อ่านออนไลน์ &rarr;
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
   {/* Blog Section */}
   <section id="blog" class="py-20 px-4 max-w-5xl mx-auto space-y-12">
     <div class="flex items-baseline justify-between border-b border-gold/15 pb-4">
@@ -277,6 +168,56 @@ import PDFViewer from "../components/PDFViewer.tsx"
     </div>
   </section>
 
+  {/* Publications Section */}
+  <section id="publications" class="py-20 px-4 bg-raised/20 border-t border-b border-gold/10">
+    <div class="max-w-5xl mx-auto space-y-12">
+      <div class="text-center space-y-2">
+        <h2 class="text-3xl font-display font-bold tracking-wider text-champagne">
+          Publications & Guides
+          <span class="block text-sm text-gold font-sans mt-1">สิ่งพิมพ์และคู่มือปฏิบัติการระบบ</span>
+        </h2>
+        <p class="text-xs text-text-muted max-w-md mx-auto">
+          Operational booklets and system audits detailing OP Stack rollup recoveries and node synchronization.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <!-- Book 1 -->
+        <div class="bg-raised/40 hover:bg-raised border border-gold/10 hover:border-gold/45 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgb(0_0_0/0.4)] rounded-xs p-6 flex flex-col justify-between transition-all duration-300 space-y-4">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[10px] font-mono text-patina font-bold">REPORT / AUDIT</span>
+              <span class="text-[10px] font-mono text-text-faint">2026-06-19</span>
+            </div>
+            <h4 class="text-lg font-sans font-semibold text-champagne leading-snug">พอร์ตชน คนไม่เจอ — ชำแหละแผนกู้ชีพ L2 OP Stack Follower</h4>
+            <p class="text-sm text-text-warm leading-relaxed">
+              คู่มือวิเคราะห์และไขปมปัญหาการหยุดซิงก์ของโหนด L2 OP Stack การประมวลผลและการแก้บั๊กแบบลงลึกถึงชั้นโครงสร้างสเปก
+            </p>
+          </div>
+          <a href="/books/2026-06-19_opstack-l2-audit" class="inline-flex items-center justify-center bg-gold text-[oklch(7%_0.006_95)] hover:bg-gold-rich hover:scale-[1.02] active:scale-[0.98] text-xs font-mono font-bold py-2 px-3 rounded-xs transition-all text-center cursor-pointer">
+            Read Online / อ่านออนไลน์ &rarr;
+          </a>
+        </div>
+        <!-- Book 2 -->
+        <div class="bg-raised/40 hover:bg-raised border border-gold/10 hover:border-gold/45 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgb(0_0_0/0.4)] rounded-xs p-6 flex flex-col justify-between transition-all duration-300 space-y-4">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[10px] font-mono text-patina font-bold">GUIDE / P2P</span>
+              <span class="text-[10px] font-mono text-text-faint">2026-06-20</span>
+            </div>
+            <h4 class="text-lg font-sans font-semibold text-champagne leading-snug">OP-Stack Nova Chain Derivation Guide</h4>
+            <p class="text-sm text-text-warm leading-relaxed">
+              บทพิสูจน์การประสานสองช่องทางขนาน ทั้ง L1 Derivation และ L2 P2P Gossip เพื่อดึงข้อมูลสถานะบล็อกเชนกลับสู่ความถูกต้อง
+            </p>
+          </div>
+          <a href="/books/2026-06-20_op-stack-nova-chain-guide" class="inline-flex items-center justify-center bg-gold text-[oklch(7%_0.006_95)] hover:bg-gold-rich hover:scale-[1.02] active:scale-[0.98] text-xs font-mono font-bold py-2 px-3 rounded-xs transition-all text-center cursor-pointer">
+            Read Online / อ่านออนไลน์ &rarr;
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   {/* Bookshelf — inline PDF via pdfjs-dist, no iframe */}
   <section id="books" class="py-20 px-4 border-t border-gold/10">
     <div class="max-w-5xl mx-auto space-y-12">
@@ -324,6 +265,65 @@ import PDFViewer from "../components/PDFViewer.tsx"
             </a>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  {/* Projects Section */}
+  <section id="projects" class="py-20 px-4 bg-raised/20 border-t border-b border-gold/10">
+    <div class="max-w-5xl mx-auto space-y-12">
+      <div class="text-center space-y-2">
+        <h2 class="text-3xl font-display font-bold tracking-wider text-champagne">
+          Projects & Submissions
+          <span class="block text-sm text-gold font-sans mt-1">รายการผลงานเวิร์กชอปสภาโอราเคิล</span>
+        </h2>
+        <p class="text-xs text-text-muted max-w-md mx-auto">
+          Work from Oracle Workshops — source-verified research, design, and implementation proofs.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {[
+          {
+            icon: "🔐",
+            title: "ARRA-MQ",
+            subtitle: "Workshop 07 · Active",
+            description: "MQTT broker with EIP-191 signature authentication. Time-bounded auth tokens, replay-attack mitigation, and micro-bridge topology for IoT device identity verification.",
+            tags: ["MQTT", "EIP-191", "TypeScript", "NanoMQ"]
+          },
+          {
+            icon: "📖",
+            title: "OP Stack Technical Guide",
+            subtitle: "Workshop 06 · Complete",
+            description: "12-chapter deep-dive into Optimism's OP Stack rollup architecture: sequencer design, batch submission, fraud proofs, and bridge mechanics from first principles.",
+            tags: ["OP Stack", "L2", "Research", "Ethereum"]
+          },
+          {
+            icon: "🔬",
+            title: "NanoMQ vs Mosquitto",
+            subtitle: "Research · Verified",
+            description: "Source-verified comparison of NanoMQ (EMQ/NNG, actor model, 255K msg/s) vs Mosquitto (epoll, single-threaded, 81K msg/s). Includes EMQ business strategy and automotive partnerships.",
+            tags: ["Research", "MQTT", "NanoMQ", "Benchmarks"]
+          }
+        ].map((project) => (
+          <div class="bg-raised/40 hover:bg-raised border border-gold/10 hover:border-gold/45 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgb(0_0_0/0.4)] rounded-xs p-6 flex flex-col justify-between transition-all duration-300 space-y-4">
+            <div class="space-y-3">
+              <div class="font-mono text-xs text-text-muted uppercase tracking-wider">{project.subtitle}</div>
+              <div class="flex items-center space-x-2">
+                <span class="text-xl">{project.icon}</span>
+                <h3 class="text-lg font-sans font-semibold text-champagne">{project.title}</h3>
+              </div>
+              <p class="text-sm text-text-warm leading-relaxed">{project.description}</p>
+            </div>
+            <div class="flex flex-wrap gap-2 pt-2">
+              {project.tags.map((tag) => (
+                <span class="text-[10px] font-mono bg-gold/5 text-gold border border-gold/15 px-2 py-0.5 rounded-xs">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   </section>
